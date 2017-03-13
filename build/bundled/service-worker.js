@@ -29,7 +29,7 @@
 
 
 /* eslint-disable quotes, comma-spacing */
-var PrecacheConfig = [["/index.html","d3b71ace00eb8083c81fd67292b4aca2"]];
+var PrecacheConfig = [["/index.html","15dfc6b5addacb65ef9e30733ef6fafb"]];
 /* eslint-enable quotes, comma-spacing */
 var CacheNamePrefix = 'sw-precache-v1--' + (self.registration ? self.registration.scope : '') + '-';
 

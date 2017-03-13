@@ -4,6 +4,7 @@
 # Project configuration
 
 NAME=ft-user-interactions-demo
+VERSION=0.0.1
 TYPE=app
 PORT=3002
 
@@ -62,6 +63,34 @@ open-docs:
 	fi; \
 	open http://localhost:${PORT}/components/${NAME}/
 
+.PHONY: tag-version
+tag-version:
+	git tag -a v${VERSION} -m '${VERSION}'
+
+.PHONY: push-tags
+push-tags:
+	git push --tags
+
 .PHONY: register
 register:
 	bower register ${NAME} git://github.com/filethis/${NAME}.git
+
+.PHONY: docs-github
+docs-github:
+	if [ "${TYPE}" = "app" ]; then \
+		echo App projects do not have documentation pages; \
+		exit 1; \
+	fi; \
+	mkdir tmp; \
+	cd ./tmp; \
+	gp.sh filethis git://github.com/filethis/${NAME}.git; \
+	rm -r ./tmp; \
+	open https://filethis.github.io/${NAME}/components/${NAME}/;
+
+.PHONY: open-docs-github
+open-docs-github:
+	if [ "${TYPE}" = "app" ]; then \
+		echo App projects do not have documentation pages; \
+		exit 1; \
+	fi; \
+	open https://filethis.github.io/${NAME}/components/${NAME}/;

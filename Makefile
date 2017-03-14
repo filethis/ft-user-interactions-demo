@@ -59,7 +59,7 @@ browser-sync:
 		browser-sync start \
 			--proxy "http://localhost:${PORT}" \
 			--port ${PORT} \
-			--files "*.html, *.css, src/${NAME}/*.html, src/${NAME}/*.css, test/*.html"; \
+			--files "*.html, *.css, src/*.html, src/*.css, test/*.html"; \
 	fi;
 
 .PHONY: open

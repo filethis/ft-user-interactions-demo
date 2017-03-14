@@ -47,6 +47,21 @@ test-safari:
 serve:
 	polymer serve --port ${PORT}
 
+.PHONY: browser-sync
+browser-sync:
+	if [ "${TYPE}" = "element" ]; then \
+		browser-sync start \
+			--proxy "http://localhost:${PORT}" \
+			--port ${PORT} \
+			--startPath "/components/${NAME}/demo/" \
+			--files "*.html, *.css, demo/*.html, demo/*.css, test/*.html"; \
+	else \
+		browser-sync start \
+			--proxy "http://localhost:${PORT}" \
+			--port ${PORT} \
+			--files "*.html, *.css, src/${NAME}/*.html, src/${NAME}/*.css, test/*.html"; \
+	fi;
+
 .PHONY: open
 open:
 	if [ "${TYPE}" = "element" ]; then \

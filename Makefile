@@ -16,7 +16,7 @@ lint:
 	if [ "${TYPE}" = "element" ]; then \
 		polymer lint --input ${NAME}.html; \
 	else \
-		polymer lint --root src/ --input ${NAME}/${NAME}.html; \
+		polymer lint --root src/ --input ${NAME}.html; \
 	fi;
 
 .PHONY: build

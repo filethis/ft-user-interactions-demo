@@ -1,18 +1,146 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="ft-user-interaction-demo-request-list.html">
 
-<link rel="import" href="../../bower_components/ft-user-interaction-form/ft-user-interaction-form.html">
+<!--<link rel="import" href="../../bower_components/ft-user-interaction-form/ft-user-interaction-form.html">-->
 
 <dom-module id="ft-user-interactions-demo">
+
+    <style include="iron-flex iron-flex-alignment"></style>
+
     <template>
-        <style>
-            :host {
-                display: block;
-            }
-        </style>
 
-        <h2>Hello [[prop1]]</h2>
+        <!-- Header and request list chooser -->
+        <!--<paper-menu-button>-->
+            <!--<paper-button class="dropdown-trigger" raised>-->
+                <!--<iron-icon icon="check"></iron-icon>-->
+                <!--<span>Dinosaurs</span>-->
+            <!--</paper-button>-->
+            <!--<paper-menu class="dropdown-content">-->
+                <!--<template is="dom-repeat" items="[[requests]]" as="request">-->
+                    <!--<paper-item>[[request.title]]</paper-item>-->
+                <!--</template>-->
+            <!--</paper-menu>-->
+        <!--</paper-menu-button>-->
 
-        <ft-user-interaction-form></ft-user-interaction-form>
+        <!-- Content -->
+        <div class="layout horizontal"
+             style="width:100%; height:100%; background-color:white;">
+
+            <!-- List panel -->
+            <div class="layout vertical"
+                 style="height:100%; border-right:1px solid #DDD;">
+
+                <!-- Title -->
+                <div class="layout horizontal center"
+                     style="width:100%; height:40px; padding-left:10px;">
+                    <iron-label style="font-family:Arial;">
+                        Request Examples
+                    </iron-label>
+                </div>
+                <div style="width:100%; height:1px; border-top:1px solid #DDD;"></div>
+
+                <!-- Request list -->
+                <user-interaction-demo-request-list
+                        id="requestList"
+                        requests="[[requests]]"
+                        selected-request="{{_selectedRequest}}"
+                        style="height:100%;">
+                </user-interaction-demo-request-list>
+
+            </div>
+
+            <!-- Request -->
+            <div class="layout vertical flex"
+                 style="height:100%; min-width:250px">
+
+                <!-- Title -->
+                <div class="layout horizontal center"
+                     style="width:100%; height:40px; padding-left:10px;">
+                    <iron-label style="font-family:Arial;">
+                        Request received
+                    </iron-label>
+                </div>
+
+                <!-- Text -->
+                <div id="requestText"
+                     style="width:100%; min-height:100px;
+                            font-size:12px;
+                            padding-left:4px;
+                            overflow:scroll;
+                            font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+                            border:1px solid #DDD;">
+                </div>
+            </div>
+
+            <!-- Spacer -->
+            <div style="width:20px;"></div>
+
+            <!-- Form -->
+            <div class="layout vertical"
+                 style="width:400px;">
+
+                <!-- Title -->
+                <div class="layout horizontal center"
+                     style="width:100%; height:40px; padding-left:10px;">
+                    <iron-label style="font-family:Arial;">
+                        Dialog generated from request
+                    </iron-label>
+                </div>
+
+                <!-- Form -->
+                <span>Form</span>
+                <!--<user-interaction-form-->
+                        <!--id="userInteractionForm"-->
+                        <!--request="{{_selectedRequest}}"-->
+                        <!--response="{{_response}}"-->
+                        <!--on-entered-data-changed="_onEnteredDataChanged"-->
+                        <!--on-button-clicked="_onButtonClicked">-->
+                <!--</user-interaction-form>-->
+            </div>
+
+            <!-- Spacer -->
+            <div style="width:20px;"></div>
+
+            <!-- Response -->
+            <div class="layout vertical flex"
+                 style="height:100%; min-width:250px;">
+
+                <!-- Title -->
+                <div class="layout horizontal center"
+                     style="width:100%; height:40px; padding-left:10px;">
+                    <iron-label style="font-family:Arial;">
+                        Response to be sent
+                    </iron-label>
+                </div>
+
+                <!-- Text -->
+                <div id="responseText"
+                     hidden$="[[!_response]]"
+                     style="width:100%; min-height:100px;
+                            font-size:12px;
+                            padding-left:4px;
+                            overflow:scroll;
+                            font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+                            border:1px solid #DDD;">
+                </div>
+                <div class="layout horizontal center center-justified"
+                     hidden$="[[_response]]"
+                     style="width:100%; min-height:100px;
+                            color:#DDD;
+                            font-size:14px;
+                            font-family:Arial;
+                            border:1px solid #DDD;">
+                    <div>
+                        Fill in dialog to the left
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </template>
 
     <script>
@@ -20,11 +148,161 @@
 
             is: 'ft-user-interactions-demo',
 
-            properties: {
-                prop1: {
+            properties:
+            {
+                requests:
+                {
+                    type: Array,
+                    notify: true,
+                    value: []
+                },
+
+                _selectedRequest:
+                {
+                    type: Object,
+                    notify: true,
+                    value: null,
+                    observer: "_onSelectedRequest"
+                },
+
+                _response:
+                {
+                    type: Object,  // JSON
+                    notify: true,
+                    value: null,
+                    observer: "_onResponseChanged"
+                },
+
+                _requestText:
+                {
                     type: String,
-                    value: 'ft-user-interactions-demo'
+                    notify: true,
+                    value: "",
+                    observer: "_onRequestTextChanged"
+                },
+                _responseText:
+                {
+                    type: String,
+                    notify: true,
+                    value: "",
+                    observer: "_onResponseTextChanged"
                 }
+            },
+
+            _requestNames: [
+                "alert",
+                "branch-code",
+                "credentials",
+                "error",
+                "general-choices",
+                "general-ota",
+                "general-text",
+                "not-paperless",
+                "not-supported",
+                "pin",
+                "retry",
+                "us-state",
+                "user-action-required",
+                "user-locked-out",
+                "user-must-set-up-account"
+            ],
+
+            _loadedRequests: [],
+
+            ready: function()
+            {
+                this._loadNextRequest();
+            },
+
+            _loadNextRequest: function()
+            {
+                var done = (this._requestNames.length == 0);
+                if (done)
+                {
+                    this.requests = this._loadedRequests;
+                    return;
+                }
+
+                var name = this._requestNames.shift();
+                var url = "/src/data/user-interaction-request-" + name + "-example-2.0.0.json";
+
+                var xmlHttpRequest = new XMLHttpRequest();
+                xmlHttpRequest.overrideMimeType("application/json");
+                xmlHttpRequest.open('GET', url, true);
+                xmlHttpRequest.onreadystatechange = function()
+                {
+                    if (xmlHttpRequest.readyState == 4 &&
+                        xmlHttpRequest.status == "200")
+                    {
+                        var requestAsJson = JSON.parse(xmlHttpRequest.responseText);
+                        this._loadedRequests.push(requestAsJson);
+
+                        this._loadNextRequest();
+                    }
+                };
+                xmlHttpRequest.send();
+            },
+
+            _onSelectedRequest: function()
+            {
+                this._updateRequestText();
+            },
+
+            _onResponseChanged: function()
+            {
+                this._updateResponseText();
+            },
+
+            // todo: Try again to bind these two text properties directly to the views above
+
+            _onRequestTextChanged: function()
+            {
+                this.$.requestText.innerHTML = this._requestText;
+            },
+
+            _onResponseTextChanged: function()
+            {
+                this.$.responseText.innerHTML = this._responseText;
+            },
+
+            _updateRequestText: function()
+            {
+                if (this._selectedRequest == null)
+                    this._requestText = "";
+                else
+                    this._requestText = this._prettyPrint(this._selectedRequest);
+            },
+
+            _updateResponseText: function()
+            {
+                if (this._response == null)
+                    this._responseText = "";
+                else
+                    this._responseText = this._prettyPrint(this._response);
+            },
+
+            _prettyPrint: function(json)
+            {
+                var text = JSON.stringify(json, null, 3);
+                text = this.fixWhitespace(text);
+                return text;
+            },
+
+            fixWhitespace: function(string)
+            {
+                // This is a workaround for a known bug in what prettyPrintOne() generates
+                string = String(string).replace(/\n/g, '<br>');
+                string = String(string).replace(/ /g, '&nbsp;');
+                return string;
+            },
+
+            _onEnteredDataChanged: function(event)
+            {
+                this.$.userInteractionForm.generateResponse();
+            },
+
+            _onButtonClicked: function(event, detail)
+            {
             }
 
         });

@@ -86,21 +86,16 @@ tag-version:
 push-tags:
 	git push --tags
 
-.PHONY: register
-register:
-	bower register ${NAME} git://github.com/filethis/${NAME}.git
-
 .PHONY: docs-github
 docs-github:
 	if [ "${TYPE}" = "app" ]; then \
 		echo App projects do not have documentation pages; \
 		exit 1; \
 	fi; \
-	mkdir tmp; \
-	cd ./tmp; \
-	gp.sh filethis git://github.com/filethis/${NAME}.git; \
-	rm -r ./tmp; \
-	open https://filethis.github.io/${NAME}/components/${NAME}/;
+	mkdir -p tmp && \
+	cd ./tmp && \
+	gp.sh filethis ${NAME} && \
+	rm -r ./tmp
 
 .PHONY: open-docs-github
 open-docs-github:
@@ -109,3 +104,11 @@ open-docs-github:
 		exit 1; \
 	fi; \
 	open https://filethis.github.io/${NAME}/components/${NAME}/;
+
+.PHONY: register
+register:
+	bower register ${NAME} git://github.com/filethis/${NAME}.git
+
+.PHONY: release
+release: tag-version push-tags docs-github open-docs-github
+	echo Released version {VERSION};

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../../bower_components/iron-label/iron-label.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="ft-user-interaction-demo-request-list-item.html">
+
+
+<dom-module id="user-interaction-demo-request-list">
+
+    <style include="iron-flex iron-flex-alignment"></style>
+
+    <template>
+        
+        <!-- List -->
+        <iron-list selection-enabled
+                   id="requestList"
+                   items="[[requests]]"
+                   selected-item="{{selectedRequest}}"
+                   as="item"
+                   style="width:250px; padding-left:15px; padding-right:15px">
+
+            <!-- Request item template -->
+            <template>
+                <user-interaction-demo-request-list-item
+                        request="[[item]]"
+                        selected$="[[selected]]">
+                </user-interaction-demo-request-list-item>
+            </template>
+        </iron-list>
+        
+    </template>
+
+    <script>
+        Polymer
+        ({
+            is: 'user-interaction-demo-request-list',
+
+            properties:
+            {
+                requests:
+                {
+                    type: Array,
+                    notify: true,
+                    value: [],
+                    observer: "_onRequestsChanged"
+                },
+                
+                selectedRequest:
+                {
+                    type: Object,
+                    notify: true,
+                    value: null
+                }
+            },
+
+            _onRequestsChanged: function()
+            {
+                var newSelectedRequest = null;
+                var haveRequests = (this.requests.length > 0);
+                if (haveRequests)
+                {
+                    var haveSelection = (this.selectedRequest != null);
+                    if (haveSelection)
+                    {
+                        var selectionIsInList = (0 == this.requests.indexOf(this.selectedRequest));
+                        if (selectionIsInList)
+                            newSelectedRequest = this.selectedRequest;
+                    }
+                }
+                this.selectedRequest = newSelectedRequest;
+
+                // For some reason it is necessary to redo the layout
+                this.$.requestList.fire('resize')
+            }
+
+        });
+    </script>
+
+</dom-module>

@@ -40,10 +40,10 @@
                 <div style="width:30px;"></div>
 
                 <!-- Requests -->
-                <paper-dropdown-menu label="Example" style="width:75px;">
+                <paper-dropdown-menu label="Example Request" style="width:250px;">
                     <paper-listbox class="dropdown-content" selected="{{_selectedRequestIndex}}">
                         <template is="dom-repeat" items="[[_requests]]" as="request">
-                            <paper-item>[[request.name]]</paper-item>
+                            <paper-item>[[_getRequestName(request)]]</paper-item>
                         </template>
                     </paper-listbox>
                 </paper-dropdown-menu>
@@ -55,29 +55,6 @@
             <!-- Content -->
             <div class="layout horizontal"
                  style="width:100%; height:100%; background-color:white;">
-
-                <!-- List panel -->
-                <div class="layout vertical"
-                     style="height:100%; border-right:1px solid #DDD;">
-
-                    <!-- Title -->
-                    <div class="layout horizontal center"
-                         style="width:100%; height:40px; padding-left:10px;">
-                        <iron-label style="font-family:Arial;">
-                            Request Examples
-                        </iron-label>
-                    </div>
-                    <div style="width:100%; height:1px; border-top:1px solid #DDD;"></div>
-
-                    <!-- Request list -->
-                    <user-interaction-demo-request-list
-                            id="requestList"
-                            requests="[[_requests]]"
-                            selected-request="{{_selectedRequest}}"
-                            style="height:100%;">
-                    </user-interaction-demo-request-list>
-
-                </div>
 
                 <!-- Request -->
                 <div class="layout vertical flex"
@@ -307,7 +284,7 @@
                         this._requestNamesToLoad = this._requestNames_2_0_0.slice();
                         break;
                     default:
-                        throw new IllegalArgumentException("Unknown user interaction schema version: " + this._selectedVersion);
+                        throw new Error("Unknown user interaction schema version: " + this._selectedVersion);
                 }
 
                 this._loadNextRequest();
@@ -342,6 +319,19 @@
                 xmlHttpRequest.send();
             },
 
+            _getRequestName: function(request)
+            {
+                switch (this._selectedVersion)
+                {
+                    case "1.0.0":
+                        return request.title;
+                    case "2.0.0":
+                        return request["2.0.0"].title;
+                    default:
+                        throw new Error("Unknown user interaction schema version: " + version);
+                }
+            },
+
             _onSelectedVersionChanged: function()
             {
                 // Update the popup selection
@@ -363,7 +353,7 @@
                     case "2.0.0":
                         return 1;
                     default:
-                        throw new IllegalArgumentException("Unknown user interaction schema version: " + version);
+                        throw new Error("Unknown user interaction schema version: " + version);
                 }
             },
 
@@ -384,7 +374,7 @@
                         this._selectedVersion = "2.0.0";
                         break;
                     default:
-                        throw new IllegalArgumentException("Invalid version index: " + _selectedVersionIndex.toString());
+                        throw new Error("Invalid version index: " + this._selectedVersionIndex.toString());
                 }
             },
 
@@ -396,20 +386,12 @@
                 if (this.selectedRequest == null)
                     this._selectedRequestIndex = null;
                 else
-                    this._selectedRequestIndex = this._mapVersionToIndex(this.selectedRequest);
+                    this._selectedRequestIndex = this._mapRequestToIndex(this.selectedRequest);
             },
 
-            _mapRequestToIndex: function(version)
+            _mapRequestToIndex: function(request)
             {
-                switch (version)
-                {
-                    case "1.0.0":
-                        return 0;
-                    case "2.0.0":
-                        return 1;
-                    default:
-                        throw new IllegalArgumentException("Unknown user interaction schema version: " + version);
-                }
+                return this._requests.indexOf(request);
             },
 
             _onSelectedRequestChangedIndexChanged: function()
@@ -420,17 +402,7 @@
                     return;
                 }
 
-                switch (this._selectedRequestIndex)
-                {
-                    case 0:
-                        this.selectedRequest = "1.0.0";
-                        break;
-                    case 1:
-                        this.selectedRequest = "2.0.0";
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Invalid request index: " + _selectedVersionIndex.toString());
-                }
+                this._selectedRequest = this._requests[this._selectedRequestIndex];
             },
 
             _onRequestsChanged: function()

@@ -92,14 +92,13 @@
                 </div>
 
                 <!-- Form -->
-                <span>Form</span>
-                <!--<ft-user-interaction-form-->
-                        <!--id="userInteractionForm"-->
-                        <!--request="{{_selectedRequest}}"-->
-                        <!--response="{{_response}}"-->
-                        <!--on-entered-data-changed="_onEnteredDataChanged"-->
-                        <!--on-button-clicked="_onButtonClicked">-->
-                <!--</ft-user-interaction-form>-->
+                <ft-user-interaction-form
+                        id="userInteractionForm"
+                        request="{{_selectedRequest}}"
+                        response="{{_response}}"
+                        on-entered-data-changed="_onEnteredDataChanged"
+                        on-button-clicked="_onButtonClicked">
+                </ft-user-interaction-form>
             </div>
 
             <!-- Spacer -->
@@ -303,6 +302,7 @@
 
             _onButtonClicked: function(event, detail)
             {
+                var foo = "kkk";
             }
 
         });

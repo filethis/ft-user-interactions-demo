@@ -1,0 +1,14 @@
+{
+    "version": "1.0.0",
+    "id": "A790B41F3E68",
+    "title": "Account Not Paperless",
+    "code": "not-paperless",
+    "legacyCode": "not_paperless",
+    "parts": [
+        {
+            "id": "360ACE485DBF",
+            "kind": "static-text",
+            "text": "Before we can retrieve your documents, you need to log in to your account directly from your browser and sign up to go paperless."
+        }
+    ]
+}

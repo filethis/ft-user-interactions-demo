@@ -7,7 +7,8 @@
     "polymer": "Polymer/polymer#^1.4.0",
     "web-animations-js": "^2.2.2",
     "iron-label": "PolymerElements/iron-label#^1.0.2",
-    "iron-list": "PolymerElements/iron-list#^1.4.3"
+    "iron-list": "PolymerElements/iron-list#^1.4.3",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

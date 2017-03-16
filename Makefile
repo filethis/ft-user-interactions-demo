@@ -4,7 +4,7 @@
 # Project configuration
 
 NAME=ft-user-interactions-demo
-VERSION=0.0.2
+VERSION=0.0.3
 TYPE=app
 PORT=3002
 

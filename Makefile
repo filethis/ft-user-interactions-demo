@@ -4,7 +4,7 @@
 # Project configuration
 
 NAME=ft-user-interactions-demo
-VERSION=0.0.1
+VERSION=0.0.2
 TYPE=app
 PORT=3002
 
@@ -78,6 +78,18 @@ open-docs:
 	fi; \
 	open http://localhost:${PORT}/components/${NAME}/
 
+.PHONY: open-docs-github
+open-docs-github:
+	if [ "${TYPE}" = "app" ]; then \
+		echo App projects do not have documentation pages; \
+		exit 1; \
+	fi; \
+	open https://filethis.github.io/${NAME}/components/${NAME}/;
+
+.PHONY: open-landing-github
+open-landing-github:
+	open https://github.com/filethis/${NAME}
+
 .PHONY: tag-version
 tag-version:
 	git tag -a v${VERSION} -m '${VERSION}'
@@ -92,18 +104,13 @@ docs-github:
 		echo App projects do not have documentation pages; \
 		exit 1; \
 	fi; \
-	mkdir -p tmp && \
-	cd ./tmp && \
-	gp.sh filethis ${NAME} && \
-	rm -r ./tmp
-
-.PHONY: open-docs-github
-open-docs-github:
-	if [ "${TYPE}" = "app" ]; then \
-		echo App projects do not have documentation pages; \
-		exit 1; \
-	fi; \
-	open https://filethis.github.io/${NAME}/components/${NAME}/;
+	set -e; \
+	rm -rf ./docs-github-tmp; \
+	mkdir -p docs-github-tmp; \
+	cd ./docs-github-tmp; \
+	gp.sh filethis ${NAME}; \
+	cd ../; \
+	rm -r ./docs-github-tmp
 
 .PHONY: register
 register:

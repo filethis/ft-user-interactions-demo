@@ -1,0 +1,29 @@
+<!DOCTYPE html><html><head><link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/iron-label/iron-label.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="ft-user-interaction-demo-request-list-item.html">
+
+
+</head><body><dom-module id="user-interaction-demo-request-list">
+
+    <style include="iron-flex iron-flex-alignment"></style>
+
+    <template>
+        
+        
+        <iron-list selection-enabled="" id="requestList" items="[[requests]]" selected-item="{{selectedRequest}}" as="item" style="width:250px; padding-left:15px; padding-right:15px">
+
+            
+            <template>
+                <user-interaction-demo-request-list-item request="[[item]]" selected="[[selected]]">
+                </user-interaction-demo-request-list-item>
+            </template>
+        </iron-list>
+        
+    </template>
+
+    <script>Polymer({is:"user-interaction-demo-request-list",properties:{requests:{type:Array,notify:!0,value:[],observer:"_onRequestsChanged"},selectedRequest:{type:Object,notify:!0,value:null}},_onRequestsChanged:function(){var e=null;this.requests.length>0&&null!=this.selectedRequest&&0==this.requests.indexOf(this.selectedRequest)&&(e=this.selectedRequest);this.selectedRequest=e,this.$.requestList.fire("resize")}});</script>
+
+</dom-module>
+</body></html>

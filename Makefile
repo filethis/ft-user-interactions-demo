@@ -4,7 +4,7 @@
 # Project configuration
 
 NAME=ft-user-interactions-demo
-VERSION=0.0.3
+VERSION=0.0.4
 TYPE=app
 PORT=3002
 
@@ -165,7 +165,7 @@ github-pages:
 
 .PHONY: publish
 publish: git-tag-version git-push-tags github-pages open-docs-published
-	echo Published version {VERSION};
+	echo Published version ${VERSION};
 
 
 .PHONY: register

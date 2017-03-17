@@ -1,7 +1,0 @@
-{
-  "name": "ft-user-interactions-demo",
-  "short_name": "ft-user-interactions-demo",
-  "description": "Demo user interactions",
-  "start_url": "/",
-  "display": "standalone"
-}

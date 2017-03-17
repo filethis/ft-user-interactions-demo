@@ -1,8 +1,4 @@
-# Some simple targets that do useful things
-
-
 # Project configuration
-
 NAME=ft-user-interactions-demo
 VERSION=0.0.6
 TYPE=app

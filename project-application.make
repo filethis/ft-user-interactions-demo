@@ -37,7 +37,7 @@ clean-doc-page:  ## Clean application documentation page
 run-browser-sync:  ## Run BrowserSync against local files
 	@browser-sync start \
 		--server \
-		--port ${PORT} \
+		--port ${LOCAL_PORT} \
 		--files "*.html, *.css, src/*.html, src/*.css, demo/*.json, test/*.html";
 
 
@@ -45,11 +45,11 @@ run-browser-sync:  ## Run BrowserSync against local files
 
 .PHONY: open-url
 open-url:  ## Open URL of local application
-	@open http://localhost:${PORT};
+	@open http://localhost:${LOCAL_PORT};
 
 .PHONY: print-url
 print-url:  ## Print URL of local application
-	@echo http://localhost:${PORT};
+	@echo http://localhost:${LOCAL_PORT};
 
 .PHONY: open-url-published
 open-url-published:  ## Open URL of published application

@@ -15,20 +15,20 @@ lint:  ## Lint project files
 build:  ## Build application
 	@polymer build;
 
-build-doc-page: ./doc-page/index.html  ## Build application project documentation page
+build-docs: ./docs/index.html  ## Build application project documentation page
 
-.PHONY: clean-doc-page
-clean-doc-page:  ## Clean application documentation page
-	@rm -f ./doc-page/index.html;
+.PHONY: clean-docs
+clean-docs:  ## Clean application documentation page
+	@rm -f ./docs/index.html;
 
-./doc-page/index.html: ${PROJECT_PAGE_SOURCE}
+./docs/index.html: ${PROJECT_PAGE_SOURCE}
 	@pandoc ${PROJECT_PAGE_SOURCE} \
 		-f markdown \
 		-t html \
 		-s \
-		--css=./doc-page.css \
-		-o ./doc-page/index.html; \
-	echo ./doc-page/index.html;
+		--css=./docs.css \
+		-o ./docs/index.html; \
+	echo ./docs/index.html;
 
 
 # Running -----------------------------------------------------------------------------------
@@ -41,59 +41,57 @@ run-browser-sync:  ## Run BrowserSync against local files
 		--files "*.html, *.css, src/*.html, src/*.css, demo/*.json, test/*.html";
 
 
-# Viewing -----------------------------------------------------------------------------------
+# Docs -----------------------------------------------------------------------------------
 
-.PHONY: open-url
-open-url:  ## Open URL of local application
+.PHONY: open-url-docs-local
+open-url-docs-local:  ## Open URL of local application documentation
+	@open file://`pwd`/docs/index.html;
+
+.PHONY: print-url-docs-local
+print-url-docs-local:  ## Print URL of local application documentation
+	@echo file://`pwd`/docs/index.html;
+
+.PHONY: open-url-docs-github-pages
+open-url-docs-github-pages:  ## Open URL of application documentation published on GitHub Pages
+	@open https://filethis.github.io/${NAME};
+
+.PHONY: print-url-docs-github-pages
+print-url-docs-github-pages:  ## Print URL of application documentation published on GitHub Pages
+	@echo https://filethis.github.io/${NAME};
+
+
+# Application -----------------------------------------------------------------------------------
+
+.PHONY: open-url-app-local
+open-url-app-local:  ## Open URL of local application
 	@open http://localhost:${LOCAL_PORT};
 
-.PHONY: print-url
-print-url:  ## Print URL of local application
+.PHONY: print-url-app-local
+print-url-app-local:  ## Print URL of local application
 	@echo http://localhost:${LOCAL_PORT};
 
-.PHONY: open-url-published
-open-url-published:  ## Open URL of published application
+.PHONY: open-url-app-github-pages
+open-url-app-github-pages:  ## Open URL of application published on GitHub Pages
 	@open https://filethis.github.io/${NAME};
 
-.PHONY: print-url-published
-print-url-published:  ## Print URL of published application
-	@echo https://filethis.github.io/${NAME};
-
-.PHONY: open-url-doc-page
-open-url-doc-page:  ## Open URL of local documentation page
-	@open file://`pwd`/doc-page/index.html;
-
-.PHONY: print-url-doc-page
-print-url-doc-page:  ## Print URL of local documentation page
-	@echo file://`pwd`/doc-page/index.html;
-
-.PHONY: open-url-doc-page-published
-open-url-doc-page-published:  ## Open URL of published project documentation page
-	@open https://filethis.github.io/${NAME};
-
-.PHONY: print-url-doc-page-published
-print-url-doc-page-published:  ## Print URL of published project documentation page
+.PHONY: print-url-app-github-pages
+print-url-app-github-pages:  ## Print URL of application published on GitHub Pages
 	@echo https://filethis.github.io/${NAME};
 
 
-# Publishing -----------------------------------------------------------------------------------
+# Publish -----------------------------------------------------------------------------------
 
-.PHONY: tag-release
-tag-release:  ## Tag the git project for the next release.
-	@git tag -a v${VERSION} -m '${VERSION}'
-
-.PHONY: git-push-tags
-git-push-tags:
-	@git push --tags
-
-publish-doc-page:
+.PHONY: publish-docs-github-pages
+publish-docs-github-pages: build-docs  ## Publish application docs on GitHub Pages. Overrides publish-app-github-pages.
 	@gh-pages \
 		--repo https://github.com/filethis/${NAME}.git \
 		--branch gh-pages \
-		--dist ./doc-page/ \
-		--remove ./doc-page/README.md;
+		--dist ./docs/ \
+		--remove ./docs/README.md; \
+	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 
-.PHONY: publish
-publish: test-chrome build-doc-page tag-release git-push-tags publish-doc-page open-url-doc-page-published  ## Publish project. Bump value of "VERSION" variable at top of project Makefile.
-	@echo Published version ${VERSION} of ${NAME};
+.PHONY: publish-app-github-pages
+publish-docs-github-pages: build-docs  ## Publish application itself on GitHub Pages. Overrides publish-docs-github-pages.
+	@xxxxx; \
+	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 

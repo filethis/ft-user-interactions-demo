@@ -1,0 +1,134 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+
+<link rel="import" href="../bower_components/ft-user-interaction-form/ft-user-interaction-form.html">
+
+</head><body><dom-module id="ft-user-interactions-demo">
+
+    <style include="iron-flex iron-flex-alignment"></style>
+
+    <template>
+
+        <div class="vertical layout center" style="padding-left:16px; padding-right:16px">
+
+            <div class="horizontal layout start center" style="padding-left:16px; padding-right:16px">
+
+                <iron-label style="font-family:Arial;padding-top:17px">
+                    A demo of FileThis user interactions
+                </iron-label>
+
+                
+                <div style="width:30px"></div>
+
+                
+                <paper-dropdown-menu label="Version" style="width:75px">
+                    <paper-listbox class="dropdown-content" selected="{{_selectedVersionIndex}}">
+                        <template is="dom-repeat" items="[[_versions]]" as="version">
+                            <paper-item>[[version]]</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+
+                
+                <div style="width:30px"></div>
+
+                
+                <paper-dropdown-menu label="Example Request" style="width:250px">
+                    <paper-listbox class="dropdown-content" selected="{{_selectedRequestIndex}}">
+                        <template is="dom-repeat" items="[[_requests]]" as="request">
+                            <paper-item>[[_getRequestName(request)]]</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </div>
+
+            
+            <div style="height:30px"></div>
+
+            
+            <div class="layout horizontal" style="width:100%; height:100%">
+
+                
+                <div class="layout vertical flex" style="height:100%; min-width:250px">
+
+                    
+                    <div class="layout horizontal center" style="width:100%; height:40px; padding-left:10px">
+                        <iron-label style="font-family:Arial">
+                            Request
+                        </iron-label>
+                    </div>
+
+                    
+                    <div id="requestText" style="width:100%; min-height:100px;
+                                font-size:12px;
+                                padding-left:4px;
+                                overflow:scroll;
+                                background-color:white;
+                                font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+                                border:1px solid #DDD">
+                    </div>
+                </div>
+
+                
+                <div style="width:20px"></div>
+
+                
+                <div class="layout vertical" style="width:400px">
+
+                    
+                    <div class="layout horizontal center" style="width:100%; height:40px; padding-left:10px">
+                        <iron-label style="font-family:Arial">
+                            Dialog generated from request
+                        </iron-label>
+                    </div>
+
+                    
+                    <ft-user-interaction-form id="userInteractionForm" request="{{_selectedRequest}}" response="{{_response}}" on-entered-data-changed="_onEnteredDataChanged" on-button-clicked="_onButtonClicked" style="background:white; border:1px solid #DDD">
+                    </ft-user-interaction-form>
+                </div>
+
+                
+                <div style="width:20px"></div>
+
+                
+                <div class="layout vertical flex" style="height:100%; min-width:250px">
+
+                    
+                    <div class="layout horizontal center" style="width:100%; height:40px; padding-left:10px">
+                        <iron-label style="font-family:Arial">
+                            Response
+                        </iron-label>
+                    </div>
+
+                    
+                    <div id="responseText" hidden$="[[!_response]]" style="width:100%; min-height:100px;
+                                font-size:12px;
+                                padding-left:4px;
+                                overflow:scroll;
+                                background-color:white;
+                                font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+                                border:1px solid #DDD">
+                    </div>
+                    <div class="layout horizontal center center-justified" hidden$="[[_response]]" style="width:100%; min-height:100px;
+                                color:#DDD;
+                                background-color:white;
+                                font-size:14px;
+                                font-family:Arial;
+                                border:1px solid #DDD">
+                        <div>
+                            Fill in dialog to the left
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+    <script>Polymer({is:"ft-user-interactions-demo",properties:{_versions:{type:Array,notify:!0,value:["1.0.0","2.0.0"]},_selectedVersion:{type:String,notify:!0,value:"2.0.0",observer:"_onSelectedVersionChanged"},_selectedVersionIndex:{type:Number,notify:!0,value:"1",observer:"_onSelectedVersionIndexChanged"},_requests:{type:Array,notify:!0,value:[],observer:"_onRequestsChanged"},_requestText:{type:String,notify:!0,value:"",observer:"_onRequestTextChanged"},_selectedRequest:{type:Object,notify:!0,value:null,observer:"_onSelectedRequestChanged"},_selectedRequestIndex:{type:Number,notify:!0,value:"1",observer:"_onSelectedRequestChangedIndexChanged"},_response:{type:Object,notify:!0,value:null,observer:"_onResponseChanged"},_responseText:{type:String,notify:!0,value:"",observer:"_onResponseTextChanged"}},_requestNames_1_0_0:["branch-code","credentials","generic-choices","generic-ota","generic-text","not-paperless","not-supported","pin","us-state","user-action-required","user-locked-out","user-must-set-up-account"],_requestNames_2_0_0:["alert","branch-code","credentials","error","general-choices","general-ota","general-text","not-paperless","not-supported","pin","retry","us-state","user-action-required","user-locked-out","user-must-set-up-account"],_requestNamesToLoad:[],_loadedRequests:[],_loadAllRequests:function(){switch(this._loadedRequests=[],this._selectedVersion){case"1.0.0":this._requestNamesToLoad=this._requestNames_1_0_0.slice();break;case"2.0.0":this._requestNamesToLoad=this._requestNames_2_0_0.slice();break;default:throw new Error("Unknown user interaction schema version: "+this._selectedVersion)}this._loadNextRequest()},_loadNextRequest:function(){if(0==this._requestNamesToLoad.length)return void(this._requests=this._loadedRequests);var e=this._requestNamesToLoad.shift(),t="data/user-interaction-request-"+e+"-example-"+this._selectedVersion+".json",s=new XMLHttpRequest;s.overrideMimeType("application/json"),s.open("GET",t,!0),s.onreadystatechange=function(){if(4==s.readyState&&"200"==s.status){var e=JSON.parse(s.responseText);this._loadedRequests.push(e),this._loadNextRequest()}}.bind(this),s.send()},_getRequestName:function(e){switch(this._selectedVersion){case"1.0.0":return e.title;case"2.0.0":return e["2.0.0"].title;default:throw new Error("Unknown user interaction schema version: "+version)}},_onSelectedVersionChanged:function(){this._selectedVersionIndex=this._mapVersionToIndex(this._selectedVersion),this.$.userInteractionForm.version=this._selectedVersion,this._loadAllRequests()},_mapVersionToIndex:function(e){switch(e){case"1.0.0":return 0;case"2.0.0":return 1;default:throw new Error("Unknown user interaction schema version: "+e)}},_onSelectedVersionIndexChanged:function(){if(null==this._selectedVersionIndex)return void(this._selectedVersion=null);switch(this._selectedVersionIndex){case 0:this._selectedVersion="1.0.0";break;case 1:this._selectedVersion="2.0.0";break;default:throw new Error("Invalid version index: "+this._selectedVersionIndex.toString())}},_onSelectedRequestChanged:function(){this._updateRequestText(),null==this._selectedRequest?this._selectedRequestIndex=null:this._selectedRequestIndex=this._mapRequestToIndex(this._selectedRequest)},_mapRequestToIndex:function(e){return this._requests.indexOf(e)},_onSelectedRequestChangedIndexChanged:function(){if(null==this._selectedRequestIndex)return void(this._selectedRequest=null);this._selectedRequest=this._requests[this._selectedRequestIndex]},_onRequestsChanged:function(){if(this._requests.length>0){var e=this._requests[0];this._selectedRequest=e}},_onResponseChanged:function(){this._updateResponseText()},_onRequestTextChanged:function(){this.$.requestText.innerHTML=this._requestText},_onResponseTextChanged:function(){this.$.responseText.innerHTML=this._responseText},_updateRequestText:function(){null==this._selectedRequest?this._requestText="":this._requestText=this._prettyPrint(this._selectedRequest)},_updateResponseText:function(){null==this._response?this._responseText="":this._responseText=this._prettyPrint(this._response)},_prettyPrint:function(e){var t=JSON.stringify(e,null,3);return t=this.fixWhitespace(t)},fixWhitespace:function(e){return e=String(e).replace(/\n/g,"<br>"),e=String(e).replace(/ /g,"&nbsp;")},_onEnteredDataChanged:function(e){this.$.userInteractionForm.generateResponse()},_onButtonClicked:function(e,t){}});</script>
+</dom-module>
+</body></html>

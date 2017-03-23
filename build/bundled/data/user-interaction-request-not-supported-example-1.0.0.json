@@ -1,0 +1,14 @@
+{
+    "version": "1.0.0",
+    "id": "41AC30EF7256",
+    "title": "Account Type Not Supported",
+    "code": "not-supported",
+    "legacyCode": "not_supported",
+    "parts": [
+        {
+            "id": "D6C519780BEA",
+            "kind": "static-text",
+            "text": "FileThis currently does not support this type of account for this institution."
+        }
+    ]
+}

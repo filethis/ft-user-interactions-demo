@@ -1,0 +1,14 @@
+{
+    "version": "1.0.0",
+    "id": "4C50293BE768",
+    "title": "Locked Out",
+    "code": "user-locked-out",
+    "legacyCode": "user_locked_out",
+    "parts": [
+        {
+            "id": "8DFA94C36E52",
+            "kind": "static-text",
+            "text": "Your account is locked. Please log into your account directly to unlock it."
+        }
+    ]
+}

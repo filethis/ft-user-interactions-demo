@@ -1,0 +1,15 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "19E5473B0F2D",
+        "title": "Error",
+        "code": "error",
+        "parts": [
+            {
+                "id": "message",
+                "kind": "static-text",
+                "text": "There was an error."
+            }
+        ]
+    }
+}

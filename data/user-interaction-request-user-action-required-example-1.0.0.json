@@ -1,0 +1,14 @@
+{
+    "version": "1.0.0",
+    "id": "3D9FC2B654A7",
+    "title": "Action Required",
+    "code": "user-action-required",
+    "legacyCode": "user_action_required",
+    "parts": [
+        {
+            "id": "C2496E708DFB",
+            "kind": "static-text",
+            "text": "Please log into your account directly and respond to the question you are being asked there."
+        }
+    ]
+}

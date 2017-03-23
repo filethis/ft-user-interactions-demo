@@ -1,0 +1,29 @@
+{
+    "version": "1.0.0",
+    "id": "1CF942768DA3",
+    "title": "Secret Questions",
+    "code": "generic",
+    "legacyCode": "complex",
+    "parts": [
+        {
+            "id": "F1DC78056A4E",
+            "kind": "static-text",
+            "text": "What is your mother's maiden name?"
+        },
+        {
+            "id": "F96E134758D2",
+            "kind": "text-input",
+            "label": ""
+        },
+        {
+            "id": "1AC638F572D4",
+            "kind": "static-text",
+            "text": "What is your favorite color?"
+        },
+        {
+            "id": "820496FECA5B",
+            "kind": "text-input",
+            "label": ""
+        }
+    ]
+}

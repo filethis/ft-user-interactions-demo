@@ -1,0 +1,20 @@
+{
+    "version": "1.0.0",
+    "id": "65CE8DB39270",
+    "title": "PIN",
+    "code": "pin",
+    "legacyCode": "pin",
+    "parts": [
+        {
+            "id": "1B8034C7FA92",
+            "kind": "static-text",
+            "text": "Please enter your PIN"
+        },
+        {
+            "id": "value",
+            "kind": "text-input",
+            "label": "PIN:",
+            "sensitive": true
+        }
+    ]
+}

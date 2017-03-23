@@ -1,0 +1,15 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "15874EBA6932",
+        "title": "Alert",
+        "code": "alert",
+        "parts": [
+            {
+                "id": "message",
+                "kind": "static-text",
+                "text": "This is a special alert about a special thing."
+            }
+        ]
+    }
+}

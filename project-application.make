@@ -34,10 +34,18 @@ clean-docs:  ## Clean application documentation page
 # Running -----------------------------------------------------------------------------------
 
 .PHONY: run-browser-sync
-run-browser-sync:  ## Run BrowserSync against local files
+run-browser-sync:  ## Run BrowserSync
 	@browser-sync start \
 		--server \
 		--port ${LOCAL_PORT} \
+		--files "*.html, *.css, src/*.html, src/*.css, demo/*.json, test/*.html";
+
+.PHONY: run-browser-sync-test
+run-browser-sync-test:  ## Run BrowserSync for tests
+	@browser-sync start \
+		--server \
+		--port ${LOCAL_PORT} \
+		--index "/test/${NAME}/${NAME}_test.html" \
 		--files "*.html, *.css, src/*.html, src/*.css, demo/*.json, test/*.html";
 
 

@@ -21,8 +21,8 @@ build-docs: ./docs/index.html  ## Build application project documentation page
 clean-docs:  ## Clean application documentation page
 	@rm -f ./docs/index.html;
 
-./docs/index.html: ${PROJECT_PAGE_SOURCE}
-	@pandoc ${PROJECT_PAGE_SOURCE} \
+./docs/index.html: ${DOC_PAGE_SOURCE}
+	@pandoc ${DOC_PAGE_SOURCE} \
 		-f markdown \
 		-t html \
 		-s \
@@ -49,6 +49,25 @@ run-browser-sync-test:  ## Run BrowserSync for tests
 		--files "*.html, *.css, src/*.html, src/*.css, demo/*.json, test/*.html";
 
 
+# Application -----------------------------------------------------------------------------------
+
+.PHONY: open-url-local
+open-url-local:  ## Open URL of local application
+	@open http://localhost:${LOCAL_PORT};
+
+.PHONY: print-url-local
+print-url-local:  ## Print URL of local application
+	@echo http://localhost:${LOCAL_PORT};
+
+.PHONY: open-url-github-pages
+open-url-github-pages:  ## Open URL of application published on GitHub Pages
+	@open https://filethis.github.io/${NAME};
+
+.PHONY: print-url-github-pages
+print-url-github-pages:  ## Print URL of application published on GitHub Pages
+	@echo https://filethis.github.io/${NAME};
+
+
 # Docs -----------------------------------------------------------------------------------
 
 .PHONY: open-url-docs-local
@@ -68,29 +87,10 @@ print-url-docs-github-pages:  ## Print URL of application documentation publishe
 	@echo https://filethis.github.io/${NAME};
 
 
-# Application -----------------------------------------------------------------------------------
-
-.PHONY: open-url-app-local
-open-url-app-local:  ## Open URL of local application
-	@open http://localhost:${LOCAL_PORT};
-
-.PHONY: print-url-app-local
-print-url-app-local:  ## Print URL of local application
-	@echo http://localhost:${LOCAL_PORT};
-
-.PHONY: open-url-app-github-pages
-open-url-app-github-pages:  ## Open URL of application published on GitHub Pages
-	@open https://filethis.github.io/${NAME};
-
-.PHONY: print-url-app-github-pages
-print-url-app-github-pages:  ## Print URL of application published on GitHub Pages
-	@echo https://filethis.github.io/${NAME};
-
-
 # Publish -----------------------------------------------------------------------------------
 
-.PHONY: publish-docs-github-pages
-publish-docs-github-pages: build-docs  ## Publish application docs on GitHub Pages. Overrides publish-app-github-pages.
+.PHONY: publish-github-pages
+publish-github-pages: build-docs  ## Publish application docs on GitHub Pages.
 	@gh-pages \
 		--repo https://github.com/filethis/${NAME}.git \
 		--branch gh-pages \
@@ -99,12 +99,13 @@ publish-docs-github-pages: build-docs  ## Publish application docs on GitHub Pag
 	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME}; \
 	open https://filethis.github.io/${NAME};
 
-.PHONY: publish-app-github-pages
-publish-app-github-pages: build-docs  ## Publish application itself on GitHub Pages. Overrides publish-docs-github-pages.
-	@gh-pages \
-		--repo https://github.com/filethis/${NAME}.git \
-		--branch gh-pages \
-		--dist ./build/bundled; \
-	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME}; \
-	open https://filethis.github.io/${NAME};
+## TODO: Merge the application into the demo deploy above, so that the doc page can just link to it, just like the element doc pages do!!!
+#.PHONY: publish-app-github-pages
+#publish-app-github-pages: build-docs
+#	@gh-pages \
+#		--repo https://github.com/filethis/${NAME}.git \
+#		--branch gh-pages \
+#		--dist ./build/bundled; \
+#	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME}; \
+#	open https://filethis.github.io/${NAME};
 

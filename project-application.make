@@ -11,14 +11,14 @@ lint:  ## Lint project files
 
 # Building -----------------------------------------------------------------------------------
 
-.PHONY: build
-build:  ## Build application
+.PHONY: build-app
+build-app:  ## Build application
 	@polymer build;
 
-build-docs: ./docs/index.html  ## Build application project documentation page
+build-app-docs: ./docs/index.html  ## Build application project documentation page
 
-.PHONY: clean-docs
-clean-docs:  ## Clean application documentation page
+.PHONY: clean-app-docs
+clean-app-docs:  ## Clean application documentation page
 	@rm -f ./docs/index.html;
 
 ./docs/index.html: ${DOC_PAGE_SOURCE}
@@ -90,8 +90,12 @@ print-url-docs-github-pages:  ## Print URL of application documentation publishe
 # Publish -----------------------------------------------------------------------------------
 
 .PHONY: publish-github-pages
-publish-github-pages: build-docs  ## Publish application docs on GitHub Pages.
-	@gh-pages \
+publish-github-pages: build-app-docs  ## Publish application docs on GitHub Pages.
+	@bin_dir="$$(dirname `which gh-pages`)"; \
+	parent_dir="$$(dirname $$bin_dir)"; \
+	lib_dir=$$parent_dir/lib; \
+	rm -rf $$lib_dir/node_modules/gh-pages/.cache; \
+	gh-pages \
 		--repo https://github.com/filethis/${NAME}.git \
 		--branch gh-pages \
 		--dist ./docs/ \
@@ -101,7 +105,7 @@ publish-github-pages: build-docs  ## Publish application docs on GitHub Pages.
 
 ## TODO: Merge the application into the demo deploy above, so that the doc page can just link to it, just like the element doc pages do!!!
 #.PHONY: publish-app-github-pages
-#publish-app-github-pages: build-docs
+#publish-app-github-pages: build-app-docs
 #	@gh-pages \
 #		--repo https://github.com/filethis/${NAME}.git \
 #		--branch gh-pages \

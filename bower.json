@@ -1,22 +1,23 @@
 {
-  "name": "ft-user-interactions-demo",
-  "version": "0.0.1",
-  "description": "Demo user interactions",
-  "main": "index.html",
-  "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0",
-    "web-animations-js": "^2.2.2",
-    "iron-label": "PolymerElements/iron-label#^1.0.2",
-    "iron-list": "PolymerElements/iron-list#^1.4.3",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
-    "paper-item": "PolymerElements/paper-item#^1.2.1",
-    "log4javascript": "^1.4.9"
-  },
-  "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
-    "web-component-tester": "^4.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
-  },
-  "ignore": []
+    "name": "ft-user-interactions-demo",
+    "version": "0.0.1",
+    "description": "Demo user interactions",
+    "main": "index.html",
+    "dependencies": {
+        "polymer": "Polymer/polymer#^1.4.0",
+        "web-animations-js": "^2.2.2",
+        "iron-label": "PolymerElements/iron-label#^1.0.2",
+        "iron-list": "PolymerElements/iron-list#^1.4.3",
+        "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
+        "paper-item": "PolymerElements/paper-item#^1.2.1",
+        "log4javascript": "^1.4.9",
+        "ft-user-interaction-form": "FileThis/ft-user-interaction-form#^0.0.8"
+    },
+    "devDependencies": {
+        "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+        "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+        "web-component-tester": "^4.0.0",
+        "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+    },
+    "ignore": []
 }

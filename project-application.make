@@ -87,10 +87,10 @@ print-url-docs-github-pages:  ## Print URL of application documentation publishe
 	@echo https://filethis.github.io/${NAME};
 
 
-# Publish -----------------------------------------------------------------------------------
+# Release -----------------------------------------------------------------------------------
 
-.PHONY: publish-github-pages
-publish-github-pages: build-app-docs  ## Publish application docs on GitHub Pages.
+.PHONY: release-github-pages
+release-github-pages: build-app-docs # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
 	@bin_dir="$$(dirname `which gh-pages`)"; \
 	parent_dir="$$(dirname $$bin_dir)"; \
 	lib_dir=$$parent_dir/lib; \
@@ -100,8 +100,12 @@ publish-github-pages: build-app-docs  ## Publish application docs on GitHub Page
 		--branch gh-pages \
 		--dist ./docs/ \
 		--remove ./docs/README.md; \
-	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME}; \
-	open https://filethis.github.io/${NAME};
+	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
+
+.PHONY: release-bower
+release-bower:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.
+	@echo TODO: Should Polymer applications be registered in Bower?;
+
 
 ## TODO: Merge the application into the demo deploy above, so that the doc page can just link to it, just like the element doc pages do!!!
 #.PHONY: publish-app-github-pages
@@ -110,6 +114,5 @@ publish-github-pages: build-app-docs  ## Publish application docs on GitHub Page
 #		--repo https://github.com/filethis/${NAME}.git \
 #		--branch gh-pages \
 #		--dist ./build/bundled; \
-#	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME}; \
-#	open https://filethis.github.io/${NAME};
+#	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://filethis.github.io/${NAME};
 

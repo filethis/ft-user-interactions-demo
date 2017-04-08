@@ -24,6 +24,26 @@
                 "id": "820496FECA5B",
                 "kind": "text-input",
                 "label": ""
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "174B2358A9F0",
+                "kind": "button",
+                "label": "Close",
+                "action": "close-dialog",
+                "submit": false
+            },
+            {
+                "id": "C2F51E763A49",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
             }
         ]
     }

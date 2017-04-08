@@ -1,20 +1,14 @@
 {
     "2.0.0": {
         "version": "2.0.0",
-        "id": "65CE8DB39270",
-        "title": "PIN",
-        "code": "pin",
+        "id": "D206CE537B9A",
+        "title": "Retry",
+        "code": "retry",
         "parts": [
             {
-                "id": "1B8034C7FA92",
+                "id": "3652C1B9FAD0",
                 "kind": "static-text",
-                "text": "Please enter the PIN for your American Express account."
-            },
-            {
-                "id": "value",
-                "kind": "text-input",
-                "label": "PIN:",
-                "sensitive": true
+                "text": "We were unable to get documents from your American Express account, for some reason. We will try again automatically in about an hour."
             },
             {
                 "id": "36794E21D5AF",
@@ -23,17 +17,17 @@
                 "url": "https://www.americanexpress.com/"
             },
             {
-                "id": "D72CF894E5A6",
+                "id": "07BD3A95CF4E",
                 "kind": "button",
                 "label": "Close",
                 "action": "close-dialog",
                 "submit": false
             },
             {
-                "id": "5D8A3B71E6FC",
+                "id": "AE387516492B",
                 "kind": "button",
-                "label": "Continue",
-                "action": "respond-and-continue-fetch",
+                "label": "XXX",
+                "action": "XXX",
                 "submit": true
             }
         ]

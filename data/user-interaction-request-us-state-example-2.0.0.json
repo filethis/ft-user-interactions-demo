@@ -8,7 +8,7 @@
             {
                 "id": "2836FB74D0C9",
                 "kind": "static-text",
-                "text": "Please select your state"
+                "text": "Please select the U.S. state in which you have your American Express account"
             },
             {
                 "id": "value",
@@ -258,6 +258,26 @@
                         "label": "Virgin Islands (VI)"
                     }
                 ]
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "CBA4371F658E",
+                "kind": "button",
+                "label": "Close",
+                "action": "close-dialog",
+                "submit": false
+            },
+            {
+                "id": "32D741A08F5B",
+                "kind": "button",
+                "label": "XXX",
+                "action": "XXX",
+                "submit": true
             }
         ]
     }

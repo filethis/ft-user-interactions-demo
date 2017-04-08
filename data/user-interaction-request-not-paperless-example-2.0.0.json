@@ -8,7 +8,27 @@
             {
                 "id": "360ACE485DBF",
                 "kind": "static-text",
-                "text": "Before we can retrieve your documents, you need to log in to your account directly from your browser and sign up to go paperless."
+                "text": "Before we can retrieve your documents, you need to log in to your American Express account directly from your browser and sign up to \"go paperless\". Please click on the link below to open a browser page and then log in to do this. Once you've done this, return here and click the \"Continue\" button."
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "8C6F047E5D3B",
+                "kind": "button",
+                "label": "Close",
+                "action": "close-dialog",
+                "submit": false
+            },
+            {
+                "id": "FC860E7B95A2",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
             }
         ]
     }

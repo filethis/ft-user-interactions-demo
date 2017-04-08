@@ -2,13 +2,33 @@
     "2.0.0": {
         "version": "2.0.0",
         "id": "0E4376FBCDA1",
-        "title": "Must Set Up Account",
+        "title": "Locked Out",
         "code": "user-must-set-up-account",
         "parts": [
             {
                 "id": "10872965CEDF",
                 "kind": "static-text",
-                "text": "You must set up your account profile. Please log into your account directly to do so."
+                "text": "Before we can get documents from your American Express account, you must first set up your account profile on their website. Please click on the link below to open a browser page and then log in to do this. Once you've done this, return here and click the \"Continue\" button."
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "B017DE32FC8A",
+                "kind": "button",
+                "label": "Close",
+                "action": "close-dialog",
+                "submit": false
+            },
+            {
+                "id": "853B7F106D92",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
             }
         ]
     }

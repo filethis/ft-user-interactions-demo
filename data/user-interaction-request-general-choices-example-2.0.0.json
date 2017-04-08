@@ -9,7 +9,7 @@
                 "id": "DE28F4A97C36",
                 "kind": "choices",
                 "suggestedWidgetType": "radiobutton",
-                "label": "Which of the following is a city in which have lived during the past 10 years?",
+                "label": "Which of the following is a city in which you have lived during the past 10 years?",
                 "choices": [
                     {
                         "label": "Minneapolis",
@@ -56,6 +56,26 @@
                         "id": "61D798CAB04E"
                     }
                 ]
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "174B2358A9F0",
+                "kind": "button",
+                "label": "Close",
+                "action": "close-dialog",
+                "submit": false
+            },
+            {
+                "id": "C2F51E763A49",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
             }
         ]
     }

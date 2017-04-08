@@ -8,7 +8,27 @@
             {
                 "id": "8DFA94C36E52",
                 "kind": "static-text",
-                "text": "Your account is locked. Please log into your account directly to unlock it."
+                "text": "Your American Express account appears to be locked. Please click on the link below to open a browser page and then log in to unlock it. Once you've done this, return here and click the \"Continue\" button."
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "6415FAD8C07E",
+                "kind": "button",
+                "label": "Close",
+                "action": "close-dialog",
+                "submit": false
+            },
+            {
+                "id": "806291DEAB47",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
             }
         ]
     }

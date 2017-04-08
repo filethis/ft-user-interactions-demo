@@ -9,7 +9,7 @@
             "id": "DE28F4A97C36",
             "kind": "choices",
             "suggestedWidgetType": "radiobutton",
-            "label": "Which of the following is a city in which have lived during the past 10 years?",
+            "label": "Which of the following is a city in which you have lived during the past 10 years?",
             "choices": [
                 {
                     "label": "Minneapolis",

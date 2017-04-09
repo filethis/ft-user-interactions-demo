@@ -268,8 +268,8 @@
             {
                 "id": "CBA4371F658E",
                 "kind": "button",
-                "label": "Close",
-                "action": "close-dialog",
+                "label": "Answer Later",
+                "action": "defer",
                 "submit": false
             },
             {

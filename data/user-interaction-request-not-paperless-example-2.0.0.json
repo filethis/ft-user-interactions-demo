@@ -19,8 +19,8 @@
             {
                 "id": "8C6F047E5D3B",
                 "kind": "button",
-                "label": "Close",
-                "action": "close-dialog",
+                "label": "Answer Later",
+                "action": "defer",
                 "submit": false
             },
             {

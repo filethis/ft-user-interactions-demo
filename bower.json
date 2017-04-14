@@ -10,7 +10,7 @@
         "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^1.5.0",
         "paper-item": "PolymerElements/paper-item#^1.2.1",
         "log4javascript": "^1.4.9",
-        "ft-user-interaction-form": "FileThis/ft-user-interaction-form#^0.0.9"
+        "ft-user-interactions-demo": "filethis/ft-user-interactions-demo#^0.0.10"
     },
     "devDependencies": {
         "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

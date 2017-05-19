@@ -32,6 +32,10 @@ lint:  ## Lint project files
 build-app:  ## Build application
 	@polymer build;
 
+.PHONY: clean-app
+clean-app:  ## Clean application
+	@rm -rf ./build/;
+
 build-app-docs: ./docs/index.html  ## Build application project documentation page
 
 .PHONY: clean-app-docs

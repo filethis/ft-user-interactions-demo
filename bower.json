@@ -3,7 +3,7 @@
     "description": "Demo user interactions",
     "main": "index.html",
     "dependencies": {
-        "polymer": "Polymer/polymer#^1.4.0",
+        "polymer": "Polymer/polymer#^1.9.0",
         "web-animations-js": "^2.2.2",
         "iron-label": "PolymerElements/iron-label#^1.0.2",
         "iron-list": "PolymerElements/iron-list#^1.4.3",

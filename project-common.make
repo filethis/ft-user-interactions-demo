@@ -138,13 +138,22 @@ print-bower-dependency:  ## Print a line that can be pasted into a bower depende
 
 # Git -----------------------------------------------------------------------------------
 
-.PHONY: pull
-pull:  ## Pull from Git repository
-	@git pull
 
-.PHONY: push
-push:  ## Push from Git repository
-	@git push
+.PHONY: add-git
+add-git:  ## Commit all git changes
+	git add -A
+
+.PHONY: commit-git
+commit-git:  # Commit all git changes
+	git commit
+
+.PHONY: push-git
+push-git:  ## Push from Git repository
+	git push
+
+.PHONY: pull-git
+pull-git:  ## Pull from Git repository
+	git pull
 
 
 # Help -----------------------------------------------------------------------------------

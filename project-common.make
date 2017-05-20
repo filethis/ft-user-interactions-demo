@@ -36,6 +36,14 @@ github-init:  ## Initialize GitHub project
 install-bower-packages:  ## Install all Bower packages specified in bower.json file
 	@bower install --save
 
+.PHONY: clean-bower-packages
+clean-bower-packages:  ## Clean all installed bower packages. Leaves "bower link" symlink directories alone.
+	@cd ./bower_components; \
+	find . -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} +;
+
+.PHONY: reinstall-bower-packages
+reinstall-bower-packages: clean-bower-packages install-bower-packages  ## Clean and reinstall all bower packages. Leaves "bower link" symlink directories alone.
+
 
 # Testing -----------------------------------------------------------------------------------
 

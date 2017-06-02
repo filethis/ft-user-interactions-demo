@@ -57,17 +57,17 @@ clean-app-docs:  ## Clean application documentation page
 .PHONY: run-browser-sync
 run-browser-sync:  ## Run BrowserSync
 	@browser-sync start \
+		--config "bs-config.js" \
 		--server \
-		--port ${LOCAL_PORT} \
-		--files "*.html, *.css, src/*.html, src/*.css, demo/*.json, test/*.html";
+		--port ${LOCAL_PORT};
 
 .PHONY: run-browser-sync-test
 run-browser-sync-test:  ## Run BrowserSync for tests
 	@browser-sync start \
+		--config "bs-config.js" \
 		--server \
 		--port ${LOCAL_PORT} \
-		--index "/test/${NAME}/${NAME}_test.html" \
-		--files "*.html, *.css, src/*.html, src/*.css, demo/*.json, test/*.html";
+		--index "/test/${NAME}/${NAME}_test.html";
 
 
 # Application -----------------------------------------------------------------------------------

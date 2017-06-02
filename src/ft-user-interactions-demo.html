@@ -38,10 +38,10 @@ and to show what user interaction response data is generated when the user fills
 
     <template>
 
-        <div class="vertical layout center"
+        <div class="layout vertical center"
              style="padding-left:16px; padding-right:16px">
 
-            <div class="horizontal layout start center"
+            <div class="layout horizontal start center"
                  style="padding-left:16px; padding-right:16px;">
 
                 <iron-label style="font-family:Arial;padding-top:17px">
@@ -321,7 +321,7 @@ and to show what user interaction response data is generated when the user fills
 
             _loadNextRequest: function()
             {
-                var done = (this._requestNamesToLoad.length == 0);
+                var done = (this._requestNamesToLoad.length === 0);
                 if (done)
                 {
                     this._requests = this._loadedRequests;
@@ -336,8 +336,8 @@ and to show what user interaction response data is generated when the user fills
                 xmlHttpRequest.open('GET', url, true);
                 xmlHttpRequest.onreadystatechange = function()
                 {
-                    if (xmlHttpRequest.readyState == 4 &&
-                        xmlHttpRequest.status == "200")
+                    if (xmlHttpRequest.readyState === 4 &&
+                        xmlHttpRequest.status === 200)
                     {
                         var requestAsJson = JSON.parse(xmlHttpRequest.responseText);
                         this._loadedRequests.push(requestAsJson);

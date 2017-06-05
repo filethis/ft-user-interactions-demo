@@ -361,7 +361,7 @@ and to show what user interaction response data is generated when the user fills
                 }
             },
 
-            _onSelectedVersionChanged: function()
+            _onSelectedVersionChanged: function(to, from)
             {
                 // Update the popup selection
                 this._selectedVersionIndex = this._mapVersionToIndex(this._selectedVersion);
@@ -386,9 +386,9 @@ and to show what user interaction response data is generated when the user fills
                 }
             },
 
-            _onSelectedVersionIndexChanged: function()
+            _onSelectedVersionIndexChanged: function(to, from)
             {
-                if (this._selectedVersionIndex == null)
+                if (this._selectedVersionIndex === null)
                 {
                     this._selectedVersion = null;
                     return;
@@ -407,12 +407,12 @@ and to show what user interaction response data is generated when the user fills
                 }
             },
 
-            _onSelectedRequestChanged: function()
+            _onSelectedRequestChanged: function(to, from)
             {
                 this._updateRequestText();
                 
                 // Update the popup selection
-                if (this._selectedRequest == null)
+                if (this._selectedRequest === null)
                     this._selectedRequestIndex = null;
                 else
                     this._selectedRequestIndex = this._mapRequestToIndex(this._selectedRequest);
@@ -423,9 +423,9 @@ and to show what user interaction response data is generated when the user fills
                 return this._requests.indexOf(request);
             },
 
-            _onSelectedRequestChangedIndexChanged: function()
+            _onSelectedRequestChangedIndexChanged: function(to, from)
             {
-                if (this._selectedRequestIndex == null)
+                if (this._selectedRequestIndex === null)
                 {
                     this._selectedRequest = null;
                     return;
@@ -434,7 +434,7 @@ and to show what user interaction response data is generated when the user fills
                 this._selectedRequest = this._requests[this._selectedRequestIndex];
             },
 
-            _onRequestsChanged: function()
+            _onRequestsChanged: function(to, from)
             {
                 // Select the first request
                 if (this._requests.length > 0)
@@ -444,19 +444,19 @@ and to show what user interaction response data is generated when the user fills
                 }
             },
 
-            _onResponseChanged: function()
+            _onResponseChanged: function(to, from)
             {
                 this._updateResponseText();
             },
 
             // todo: Try again to bind these two text properties directly to the views above
 
-            _onRequestTextChanged: function()
+            _onRequestTextChanged: function(to, from)
             {
                 this.$.requestText.innerHTML = this._requestText;
             },
 
-            _onResponseTextChanged: function()
+            _onResponseTextChanged: function(to, from)
             {
                 this.$.responseText.innerHTML = this._responseText;
             },

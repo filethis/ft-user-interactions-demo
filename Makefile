@@ -1,6 +1,6 @@
 # Project configuration
 NAME=ft-user-interactions-demo
-VERSION=0.0.10
+VERSION=0.0.11
 LOCAL_PORT=3002
 GITHUB_USER=filethis
 BOWER_NAMESPACE=FileThis

@@ -1,0 +1,35 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "41AC30EF7256",
+        "title": "Account Type Not Supported",
+        "code": "not-supported",
+        "parts": [
+            {
+                "id": "D6C519780BEA",
+                "kind": "static-text",
+                "text": "We don't currently support this type of account for American Express."
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "8C4DE0AF2673",
+                "kind": "button",
+                "label": "Answer Later",
+                "action": "defer",
+                "submit": false
+            },
+            {
+                "id": "B01E794C8FD6",
+                "kind": "button",
+                "label": "Delete Connection",
+                "action": "respond-and-delete-connection",
+                "submit": true
+            }
+        ]
+    }
+}

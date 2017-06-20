@@ -1,0 +1,41 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "65CE8DB39270",
+        "title": "PIN",
+        "code": "pin",
+        "parts": [
+            {
+                "id": "1B8034C7FA92",
+                "kind": "static-text",
+                "text": "Please enter the PIN for your American Express account."
+            },
+            {
+                "id": "value",
+                "kind": "text-input",
+                "label": "PIN:",
+                "sensitive": true
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "D72CF894E5A6",
+                "kind": "button",
+                "label": "Answer Later",
+                "action": "defer",
+                "submit": false
+            },
+            {
+                "id": "5D8A3B71E6FC",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "19E5473B0F2D",
+        "title": "Error",
+        "code": "error",
+        "parts": [
+            {
+                "id": "46A8EC7F5D19",
+                "kind": "static-text",
+                "text": "An error occurred while trying to get documents from your American Express account."
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "B9FC24D7865E",
+                "kind": "button",
+                "label": "Answer Later",
+                "action": "defer",
+                "submit": false
+            },
+            {
+                "id": "B01E794C8FD6",
+                "kind": "button",
+                "label": "Delete Connection",
+                "action": "respond-and-delete-connection",
+                "submit": true
+            },
+            {
+                "id": "207193CF6DAE",
+                "kind": "button",
+                "label": "OK is this ever useful? Just have a try-again button (which would need to clear the error question, right?",
+                "action": "respond-only",
+                "submit": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "3D9FC2B654A7",
+        "title": "Action Required",
+        "code": "user-action-required",
+        "parts": [
+            {
+                "id": "C2496E708DFB",
+                "kind": "static-text",
+                "text": "Before we can get documents from your American Express account, you must first answer a question you are being asked on their website. Please click on the link below to open a browser page and then log in to do this. Once you've done this, return here and click the \"Continue\" button."
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "587E0A394CF1",
+                "kind": "button",
+                "label": "Answer Later",
+                "action": "defer",
+                "submit": false
+            },
+            {
+                "id": "DF39ECA2B501",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
+            }
+        ]
+    }
+}

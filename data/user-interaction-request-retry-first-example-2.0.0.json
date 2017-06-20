@@ -1,0 +1,35 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "D206CE537B9A",
+        "title": "Retry",
+        "code": "retry",
+        "parts": [
+            {
+                "id": "3652C1B9FAD0",
+                "kind": "static-text",
+                "text": "We were unable to get documents from your American Express account, for some reason. We will try again automatically in about an hour."
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "07BD3A95CF4E",
+                "kind": "button",
+                "label": "Answer Later",
+                "action": "defer",
+                "submit": false
+            },
+            {
+                "id": "AE387516492B",
+                "kind": "button",
+                "label": "XXX",
+                "action": "XXX",
+                "submit": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "2.0.0": {
+        "version": "2.0.0",
+        "id": "DA708F42CE56",
+        "title": "One-Time Authorization Code",
+        "code": "general",
+        "parts": [
+            {
+                "id": "80CA7FD95B46",
+                "kind": "choices",
+                "suggestedWidgetType": "radiobutton",
+                "label": "Send my temporary authorization code to",
+                "choices": [
+                    {
+                        "label": "Email: trent@filethis.com",
+                        "id": "894EB3D57A6C"
+                    },
+                    {
+                        "label": "Mobile: 1-415-456-1234",
+                        "id": "BE1980FC76A2"
+                    },
+                    {
+                        "label": "Mobile: 1-415-377-7887",
+                        "id": "B93EC1A4258D"
+                    }
+                ]
+            },
+            {
+                "id": "36794E21D5AF",
+                "kind": "link",
+                "text": "American Express",
+                "url": "https://www.americanexpress.com/"
+            },
+            {
+                "id": "174B2358A9F0",
+                "kind": "button",
+                "label": "Answer Later",
+                "action": "defer",
+                "submit": false
+            },
+            {
+                "id": "C2F51E763A49",
+                "kind": "button",
+                "label": "Continue",
+                "action": "respond-and-continue-fetch",
+                "submit": true
+            }
+        ]
+    }
+}

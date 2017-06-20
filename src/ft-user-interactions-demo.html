@@ -1,0 +1,492 @@
+<!--
+Copyright 2017 FileThis, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+
+<link rel="import" href="../bower_components/ft-user-interaction-form/ft-user-interaction-form.html">
+
+<!--
+`ft-user-interactions-demo`
+An element that defines the top-level of the FileThis user interactions demo application.
+
+This application uses sample user interaction requests to show how they are rendered by the ft-user-interaction-form,
+and to show what user interaction response data is generated when the user fills in the dialog and commits it.
+-->
+
+<dom-module id="ft-user-interactions-demo">
+    <template>
+
+        <style include="iron-flex iron-flex-alignment iron-positioning"></style>
+
+
+        <style>
+            :host {
+                display:block;
+            }
+        </style>
+
+        <div class="layout vertical center" style="padding-left:16px; padding-right:16px">
+
+            <div class="layout horizontal start center" style="padding-left:16px; padding-right:16px;">
+
+                <iron-label style="font-family:Arial;padding-top:17px">
+                    A demo of FileThis user interactions
+                </iron-label>
+
+                <!-- Spacer -->
+                <div style="width:30px;"></div>
+
+                <!-- Versions -->
+                <paper-dropdown-menu label="Version" style="width:75px;">
+                    <paper-listbox class="dropdown-content" slot="dropdown-content" selected="{{_selectedVersionIndex}}">
+                        <template is="dom-repeat" items="[[_versions]]" as="version">
+                            <paper-item>[[version]]</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+
+                <!-- Spacer -->
+                <div style="width:30px;"></div>
+
+                <!-- Requests -->
+                <paper-dropdown-menu label="Example Request" style="width:250px;">
+                    <paper-listbox class="dropdown-content" slot="dropdown-content" selected="{{_selectedRequestIndex}}">
+                        <template is="dom-repeat" items="[[_requests]]" as="request">
+                            <paper-item>[[_getRequestName(request)]]</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </div>
+
+            <!-- Spacer -->
+            <div style="height:30px;"></div>
+
+            <!-- Content -->
+            <div class="layout horizontal" style="width:100%; height:100%;">
+
+                <!-- Request -->
+                <div class="layout vertical flex" style="height:100%; min-width:250px">
+
+                    <!-- Title -->
+                    <div class="layout horizontal center" style="width:100%; height:40px; padding-left:10px;">
+                        <iron-label style="font-family:Arial;">
+                            Request
+                        </iron-label>
+                    </div>
+
+                    <!-- Text -->
+                    <div id="requestText" style="width:100%; min-height:100px;
+                                font-size:12px;
+                                padding-left:4px;
+                                overflow:scroll;
+                                background-color:white;
+                                font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+                                border:1px solid #DDD;">
+                    </div>
+                </div>
+
+                <!-- Spacer -->
+                <div style="width:20px;"></div>
+
+                <!-- Form -->
+                <div class="layout vertical" style="width:400px;">
+
+                    <!-- Title -->
+                    <div class="layout horizontal center" style="width:100%; height:40px; padding-left:10px;">
+                        <iron-label style="font-family:Arial;">
+                            Dialog generated from request
+                        </iron-label>
+                    </div>
+
+                    <!-- Form -->
+                    <ft-user-interaction-form id="userInteractionForm" request="{{_selectedRequest}}" response="{{_response}}" on-entered-data-changed="_onEnteredDataChanged" on-button-clicked="_onButtonClicked" style="background:white; border:1px solid #DDD;">
+                    </ft-user-interaction-form>
+                </div>
+
+                <!-- Spacer -->
+                <div style="width:20px;"></div>
+
+                <!-- Response -->
+                <div class="layout vertical flex" style="height:100%; min-width:250px;">
+
+                    <!-- Title -->
+                    <div class="layout horizontal center" style="width:100%; height:40px; padding-left:10px;">
+                        <iron-label style="font-family:Arial;">
+                            Response
+                        </iron-label>
+                    </div>
+
+                    <!-- Text -->
+                    <div id="responseText" hidden$="[[!_response]]" style="width:100%; min-height:100px;
+                                font-size:12px;
+                                padding-left:4px;
+                                overflow:scroll;
+                                background-color:white;
+                                font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+                                border:1px solid #DDD;">
+                    </div>
+                    <div class="layout horizontal center center-justified" hidden$="[[_response]]" style="width:100%; min-height:100px;
+                                color:#DDD;
+                                background-color:white;
+                                font-size:14px;
+                                font-family:Arial;
+                                border:1px solid #DDD;">
+                        <div>
+                            Fill in dialog to the left
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'ft-user-interactions-demo',
+
+            properties:
+            {
+                // Version ----------------------------
+
+                _versions:
+                {
+                    type: Array,
+                    notify: true,
+                    value: [
+                        '1.0.0',
+                        '2.0.0'
+                    ]
+                },
+
+                _selectedVersion:
+                {
+                    type: String,
+                    notify: true,
+                    value: "2.0.0",
+                    observer: "_onSelectedVersionChanged"
+                },
+
+                _selectedVersionIndex:
+                {
+                    type: Number,
+                    notify: true,
+                    value: "1",
+                    observer: "_onSelectedVersionIndexChanged"
+                },
+
+
+                // Request ----------------------------
+
+                _requests:
+                {
+                    type: Array,
+                    notify: true,
+                    value: [],
+                    observer: "_onRequestsChanged"
+                },
+
+                _requestText:
+                {
+                    type: String,
+                    notify: true,
+                    value: "",
+                    observer: "_onRequestTextChanged"
+                },
+
+                _selectedRequest:
+                {
+                    type: Object,
+                    notify: true,
+                    value: null,
+                    observer: "_onSelectedRequestChanged"
+                },
+
+                _selectedRequestIndex:
+                {
+                    type: Number,
+                    notify: true,
+                    value: "1",
+                    observer: "_onSelectedRequestChangedIndexChanged"
+                },
+
+                // Response ----------------------------
+
+                _response:
+                {
+                    type: Object,  // JSON
+                    notify: true,
+                    value: null,
+                    observer: "_onResponseChanged"
+                },
+
+                _responseText:
+                {
+                    type: String,
+                    notify: true,
+                    value: "",
+                    observer: "_onResponseTextChanged"
+                }
+            },
+
+            _requestNames_1_0_0: [
+                "branch-code",
+                "credentials",
+                "generic-choices",
+                "generic-ota",
+                "generic-text",
+                "not-paperless",
+                "not-supported",
+                "pin",
+                "us-state",
+                "user-action-required",
+                "user-locked-out",
+                "user-must-set-up-account"
+            ],
+
+            _requestNames_2_0_0: [
+                "alert",
+                "branch-code",
+                "credentials",
+                "error",
+                "general-choices",
+                "general-ota",
+                "general-text",
+                "not-paperless",
+                "not-supported",
+                "pin",
+                "retry-first",
+                "retry-multiple",
+                "us-state",
+                "user-action-required",
+                "user-locked-out",
+                "user-must-set-up-account"
+            ],
+
+            _requestNamesToLoad: [],
+            _loadedRequests: [],
+
+            _loadAllRequests: function()
+            {
+                this._loadedRequests = [];
+
+                switch (this._selectedVersion)
+                {
+                    case "1.0.0":
+                        this._requestNamesToLoad = this._requestNames_1_0_0.slice();
+                        break;
+                    case "2.0.0":
+                        this._requestNamesToLoad = this._requestNames_2_0_0.slice();
+                        break;
+                    default:
+                        throw new Error("Unknown user interaction schema version: " + this._selectedVersion);
+                }
+
+                this._loadNextRequest();
+            },
+
+            _loadNextRequest: function()
+            {
+                var done = (this._requestNamesToLoad.length === 0);
+                if (done)
+                {
+                    this._requests = this._loadedRequests;
+                    return;
+                }
+
+                var name = this._requestNamesToLoad.shift();
+                var url = "data/user-interaction-request-" + name + "-example-" + this._selectedVersion + ".json";
+
+                var xmlHttpRequest = new XMLHttpRequest();
+                xmlHttpRequest.overrideMimeType("application/json");
+                xmlHttpRequest.open('GET', url, true);
+                xmlHttpRequest.onreadystatechange = function()
+                {
+                    if (xmlHttpRequest.readyState === 4 &&
+                        xmlHttpRequest.status === 200)
+                    {
+                        var requestAsJson = JSON.parse(xmlHttpRequest.responseText);
+                        this._loadedRequests.push(requestAsJson);
+
+                        this._loadNextRequest();
+                    }
+                }.bind(this);
+                xmlHttpRequest.send();
+            },
+
+            _getRequestName: function(request)
+            {
+                switch (this._selectedVersion)
+                {
+                    case "1.0.0":
+                        return request.title;
+                    case "2.0.0":
+                        return request["2.0.0"].title;
+                    default:
+                        throw new Error("Unknown user interaction schema version: " + version);
+                }
+            },
+
+            _onSelectedVersionChanged: function(to, from)
+            {
+                // Update the popup selection
+                this._selectedVersionIndex = this._mapVersionToIndex(this._selectedVersion);
+
+                // Update version used by the form
+                this.$.userInteractionForm.version = this._selectedVersion;
+
+                // Load examples for this version
+                this._loadAllRequests();
+            },
+
+            _mapVersionToIndex: function(version)
+            {
+                switch (version)
+                {
+                    case "1.0.0":
+                        return 0;
+                    case "2.0.0":
+                        return 1;
+                    default:
+                        throw new Error("Unknown user interaction schema version: " + version);
+                }
+            },
+
+            _onSelectedVersionIndexChanged: function(to, from)
+            {
+                if (this._selectedVersionIndex === null)
+                {
+                    this._selectedVersion = null;
+                    return;
+                }
+
+                switch (this._selectedVersionIndex)
+                {
+                    case 0:
+                        this._selectedVersion = "1.0.0";
+                        break;
+                    case 1:
+                        this._selectedVersion = "2.0.0";
+                        break;
+                    default:
+                        throw new Error("Invalid version index: " + this._selectedVersionIndex.toString());
+                }
+            },
+
+            _onSelectedRequestChanged: function(to, from)
+            {
+                this._updateRequestText();
+                
+                // Update the popup selection
+                if (this._selectedRequest === null)
+                    this._selectedRequestIndex = null;
+                else
+                    this._selectedRequestIndex = this._mapRequestToIndex(this._selectedRequest);
+            },
+
+            _mapRequestToIndex: function(request)
+            {
+                return this._requests.indexOf(request);
+            },
+
+            _onSelectedRequestChangedIndexChanged: function(to, from)
+            {
+                if (this._selectedRequestIndex === null)
+                {
+                    this._selectedRequest = null;
+                    return;
+                } 
+
+                this._selectedRequest = this._requests[this._selectedRequestIndex];
+            },
+
+            _onRequestsChanged: function(to, from)
+            {
+                // Select the first request
+                if (this._requests.length > 0)
+                {
+                    var firstRequest = this._requests[0];
+                    this._selectedRequest = firstRequest;
+                }
+            },
+
+            _onResponseChanged: function(to, from)
+            {
+                this._updateResponseText();
+            },
+
+            // todo: Try again to bind these two text properties directly to the views above
+
+            _onRequestTextChanged: function(to, from)
+            {
+                this.$.requestText.innerHTML = this._requestText;
+            },
+
+            _onResponseTextChanged: function(to, from)
+            {
+                this.$.responseText.innerHTML = this._responseText;
+            },
+
+            _updateRequestText: function()
+            {
+                if (this._selectedRequest == null)
+                    this._requestText = "";
+                else
+                    this._requestText = this._prettyPrint(this._selectedRequest);
+            },
+
+            _updateResponseText: function()
+            {
+                if (this._response == null)
+                    this._responseText = "";
+                else
+                    this._responseText = this._prettyPrint(this._response);
+            },
+
+            _prettyPrint: function(json)
+            {
+                var text = JSON.stringify(json, null, 3);
+                text = this._fixWhitespace(text);
+                return text;
+            },
+
+            _fixWhitespace: function(string)
+            {
+                // This is a workaround for a known bug in what prettyPrintOne() generates
+                string = String(string).replace(/\n/g, '<br>');
+                string = String(string).replace(/ /g, '&nbsp;');
+                return string;
+            },
+
+            _onEnteredDataChanged: function(event)
+            {
+                this.$.userInteractionForm.generateResponse();
+            },
+
+            _onButtonClicked: function(event, detail)
+            {
+                var foo = "kkk";
+            }
+
+        });
+    </script>
+</dom-module>

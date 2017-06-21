@@ -6,7 +6,7 @@
     "shell": "src/ft-user-interactions-demo.html",
     "fragments": [
     ],
-    "sourceGlobs": [
+    "sources": [
      "src/**/*",
      "data/**/*",
      "bower.json"

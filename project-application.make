@@ -49,15 +49,15 @@ clean-app-docs:  ## Clean application documentation page
 
 # Running -----------------------------------------------------------------------------------
 
-.PHONY: run-browser-sync
-run-browser-sync:  ## Run BrowserSync
+.PHONY: open
+open:  ## Run BrowserSync
 	@browser-sync start \
 		--config "bs-config.js" \
 		--server \
 		--port ${LOCAL_PORT};
 
-.PHONY: run-browser-sync-test
-run-browser-sync-test:  ## Run BrowserSync for tests
+.PHONY: open-test
+open-test:  ## Run BrowserSync for tests
 	@browser-sync start \
 		--config "bs-config.js" \
 		--server \

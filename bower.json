@@ -3,7 +3,7 @@
   "description": "Demo user interactions",
   "main": "index.html",
   "dependencies": {
-    "ft-user-interaction-form": "filethis/ft-user-interaction-form#^0.0.21",
+    "ft-user-interaction-form": "filethis/ft-user-interaction-form#^0.0.22",
     "iron-label": "PolymerElements/iron-label#1 - 2",
     "iron-list": "PolymerElements/iron-list#1 - 2",
     "log4javascript": "^1.4.9",

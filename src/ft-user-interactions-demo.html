@@ -282,6 +282,13 @@ and to show what user interaction response data is generated when the user fills
                 }
             },
 
+            ready: function()
+            {
+                // Suppress deprecation warning
+                this.$.requestText.editor.$blockScrolling = Infinity;
+                this.$.responseText.editor.$blockScrolling = Infinity;
+            },
+
             _requestNames_1_0_0: [
                 "branch-code",
                 "credentials",

@@ -3,9 +3,10 @@
   "description": "Demo user interactions",
   "main": "index.html",
   "dependencies": {
-    "ft-user-interaction-form": "filethis/ft-user-interaction-form#^0.0.22",
+    "ft-user-interaction-form": "filethis/ft-user-interaction-form#^0.0.25",
     "iron-label": "PolymerElements/iron-label#1 - 2",
     "iron-list": "PolymerElements/iron-list#1 - 2",
+    "juicy-ace-editor": "^2.0.4",
     "log4javascript": "^1.4.9",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#1 - 2",
     "paper-item": "PolymerElements/paper-item#1 - 2",

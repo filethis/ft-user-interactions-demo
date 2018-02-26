@@ -34,28 +34,8 @@ eslint:  ## ESLint project files
 
 # Building -----------------------------------------------------------------------------------
 
-.PHONY: build-app
-build-app:  ## Build application
-	@polymer build;
-
-.PHONY: clean-app
-clean-app:  ## Clean application
-	@rm -rf ./build/;
-
-
-.PHONY: build-dist
-build-dist: clean-dist build-app  ## Build distribution
-	@mkdir -p ./dist; \
-	pushd ./build; \
-	zip -r ../dist/es5-bundled.zip ./es5-bundled
-
-.PHONY: clean-dist
-clean-dist:  ## Clean distribution
-	@rm -rf ./dist/;
-
-
-.PHONY: clean-app-docs
-clean-app-docs:  ## Clean application documentation page
+.PHONY: clean-docs
+clean-docs:  ## Clean application documentation page
 	@rm -f ./docs/index.html;
 
 
@@ -99,6 +79,10 @@ open-test:  ## Run BrowserSync for tests
 
 
 # Application -----------------------------------------------------------------------------------
+
+.PHONY: release-app
+release-app:  ## Release an application to our bucket
+	@echo Not yet implemented. Move documentation from GitHub to our bucket under an "/app" subfolder.;
 
 .PHONY: open-app
 open-app:  ## Open URL of application published on GitHub Pages

@@ -21,28 +21,52 @@ SHELL := /bin/bash
 include project-common.make
 
 
-# Validation -----------------------------------------------------------------------------------
+# Project -----------------------------------------------------------------------------------
 
-.PHONY: polymerlint
-polymerlint:  ## Run Polymer linter on project files
+
+# Validate
+
+.PHONY: project-validate-polymerlint
+project-validate-polymerlint:  ## Run Polymer linter over project source files
 	@polymer lint --input ./src/${NAME}.html;
 
-.PHONY: eslint
-eslint:  ## ESLint project files
+.PHONY: project-validate-eslint
+project-validate-eslint:  ## Run ESLint tool over project source files
 	@eslint --ext .html,.js ./src;
 
 
-# Building -----------------------------------------------------------------------------------
+# Serve
 
-.PHONY: clean-docs
-clean-docs:  ## Clean application documentation page
-	@rm -f ./docs/index.html;
+.PHONY: project-serve-python
+project-serve-python:  ## Serve application using Python 2.7
+	@echo http:localhost:${LOCAL_PORT}; \
+	python -m SimpleHTTPServer ${LOCAL_PORT};
 
+.PHONY: project-serve-ruby
+project-serve-ruby:  ## Serve application using Ruby
+	@echo http:localhost:${LOCAL_PORT}; \
+	@ruby -run -ehttpd . -p${LOCAL_PORT};
 
-# Running -----------------------------------------------------------------------------------
+.PHONY: project-serve-node
+project-serve-node:  ## Serve application using Node "static-server" tool
+	@echo http:localhost:${LOCAL_PORT}; \
+	@static-server --port ${LOCAL_PORT};
 
-.PHONY: open
-open:  ## Run BrowserSync against an already-running local server
+.PHONY: project-serve-php
+project-serve-php:  ## Serve application using PHP
+	@echo http:localhost:${LOCAL_PORT}; \
+	@php -S 127.0.0.1:${LOCAL_PORT};
+
+# TODO: BrowserSync takes forever to load the application and often runs out of memory. Fix.
+#.PHONY: project-serve-browsersync
+#project-serve-browsersync:  ## Serve application using BrowserSync
+#	@browser-sync start \
+#		--config "bs-config.js" \
+#		--server \
+#		--port ${LOCAL_PORT};
+
+.PHONY: project-browse-browsersync
+project-browse-browsersync:  ## Run BrowserSync, proxied against an already-running local server
 	@if lsof -i tcp:${LOCAL_PORT} > /dev/null; then \
 		echo Found running Polymer server; \
 	else \
@@ -55,15 +79,8 @@ open:  ## Run BrowserSync against an already-running local server
 		--port ${LOCAL_PORT} \
 		--startPath "/";
 
-.PHONY: open-direct
-open-direct:  ## Run BrowserSync to serve local files
-	@browser-sync start \
-		--config "bs-config.js" \
-		--server \
-		--port ${LOCAL_PORT};
-
-.PHONY: open-test
-open-test:  ## Run BrowserSync for tests
+.PHONY: project-test-browsersync
+project-test-browsersync:  ## Run BrowserSync for tests
 	@if lsof -i tcp:${LOCAL_PORT} > /dev/null; then \
 		echo Found running Polymer server; \
 	else \
@@ -78,36 +95,39 @@ open-test:  ## Run BrowserSync for tests
 		--index "${NAME}_test.html";
 
 
-# Application -----------------------------------------------------------------------------------
-
-.PHONY: release-app
-release-app:  ## Release an application to our bucket
-	@echo Not yet implemented. Move documentation from GitHub to our bucket under an "/app" subfolder.;
-
-.PHONY: open-app
-open-app:  ## Open URL of application published on GitHub Pages
-	@open https://${GITHUB_USER}.github.io/${NAME}/;
-
-.PHONY: url-app
-url-app:  ## Print URL of application published on GitHub Pages
-	@echo https://${GITHUB_USER}.github.io/${NAME}/;
+# Artifacts -----------------------------------------------------------------------------------
 
 
-# Docs -----------------------------------------------------------------------------------
+# Test before release
 
-.PHONY: open-docs
-open-docs:  ## Open URL of application documentation published on GitHub Pages
-	@open https://${GITHUB_USER}.github.io/${NAME}/;
-
-.PHONY: url-docs
-url-docs:  ## Print URL of application documentation published on GitHub Pages
-	@echo https://${GITHUB_USER}.github.io/${NAME}/;
+.PHONY: artifact-serve-app-locally
+artifact-serve-app-locally:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	cd ./build/app && python -m SimpleHTTPServer ${LOCAL_PORT};
 
 
-# Release -----------------------------------------------------------------------------------
+# Publish application
 
-.PHONY: publish-github-pages
-publish-github-pages: build-dist
+.PHONY: artifact-publish-app
+artifact-publish-app: artifact-publish-app-versioned artifact-publish-app-latest  ## Release both the versioned and latest application
+	@echo Pubished both versioned and latest application
+
+.PHONY: artifact-publish-app-versioned
+artifact-publish-app-versioned:  ## Release versioned application
+	@aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/v${VERSION}/app/; \
+	echo https://connect.filethis.com/${NAME}/v${VERSION}/app/index.html;
+
+.PHONY: artifact-publish-app-latest
+artifact-publish-app-latest:  ## Release latest application
+	@aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/latest/app/; \
+	echo https://connect.filethis.com/${NAME}/latest/app/index.html;
+
+.PHONY: artifact-invalidate-app-latest
+artifact-invalidate-app-latest:  ## Invalidate CDN distribution of latest application
+	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/app/*"; fi
+
+.PHONY: artifact-publish-app-github-pages
+artifact-publish-app-github-pages: build-dist
 	@bin_dir="$$(dirname `which gh-pages`)"; \
 	parent_dir="$$(dirname $$bin_dir)"; \
 	lib_dir=$$parent_dir/lib; \
@@ -119,18 +139,55 @@ publish-github-pages: build-dist
 		--dist ./build/es5-bundled; \
 	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
 
-#.PHONY: publish-github-pages
-#publish-github-pages: build-dist # Internal target: Publish application docs on GitHub Pages. Usually invoked as part of a release via 'release' target.
-#	@bin_dir="$$(dirname `which gh-pages`)"; \
-#	parent_dir="$$(dirname $$bin_dir)"; \
-#	lib_dir=$$parent_dir/lib; \
-#	rm -rf $$lib_dir/node_modules/gh-pages/.cache; \
-#	gh-pages \
-#		--repo https://github.com/${GITHUB_USER}/${NAME}.git \
-#		--branch gh-pages \
-#		--dist ./docs/ \
-#		--remove ./docs/README.md; \
-#	echo Published documentation for version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
+
+# Publications -----------------------------------------------------------------------------------
+
+
+# Browse published application
+
+.PHONY: publication-browse-app-versioned
+publication-browse-app-versioned:  ## Open the published, versioned application in browser
+	@open https://connect.filethis.com/${NAME}/v${VERSION}/app/index.html;
+
+.PHONY: publication-browse-app-latest
+publication-browse-app-latest:  ## Open the published, latest application in browser
+	@open https://connect.filethis.com/${NAME}/latest/app/index.html;
+
+.PHONY: publication-browse-app-github-pages
+publication-browse-app-github-pages:  ## Open URL of application published on GitHub Pages
+	@open https://${GITHUB_USER}.github.io/${NAME}/;
+
+
+# Print URL of published application
+
+.PHONY: publication-url-app-versioned
+publication-url-app-versioned:  ## Print the published, versioned application url
+	@echo https://connect.filethis.com/${NAME}/v${VERSION}/app/index.html;
+
+.PHONY: publication-url-app-latest
+publication-url-app-latest:  ## Print the published, latest application url
+	@echo https://connect.filethis.com/${NAME}/latest/app/index.html;
+
+.PHONY: publication-url-app-github-pages
+publication-url-app-github-pages:  ## Print URL of application published on GitHub Pages
+	@echo https://${GITHUB_USER}.github.io/${NAME}/;
+
+
+# Browse published docs
+
+.PHONY: publication-browse-docs-github-pages
+publication-browse-docs-github-pages:  ## Open URL of application documentation published on GitHub Pages
+	@open https://${GITHUB_USER}.github.io/${NAME}/;
+
+
+# Print URL of published docs
+
+.PHONY: publication-url-docs-github-pages
+publication-url-docs-github-pages:  ## Print URL of docs published on GitHub Pages
+	@echo https://${GITHUB_USER}.github.io/${NAME}/;
+
+
+# Bower -----------------------------------------------------------------------------------
 
 .PHONY: bower-register
 bower-register:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.

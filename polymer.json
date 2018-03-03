@@ -1,28 +1,41 @@
 {
-    "entrypoint": "index.html",
-    "shell": "src/ft-user-interactions-demo.html",
-    "fragments": [
+  "entrypoint": "index.html",
+  "shell": "src/ft-user-interactions-demo.html",
+  "fragments": [
+  ],
+  "sources": [
+    "src/**/*",
+    "data/**/*",
+    "robots.txt"
+  ],
+  "extraDependencies": [
+    "manifest.json"
+  ],
+  "lint": {
+    "rules": [
+      "polymer-2-hybrid"
     ],
-    "sources": [
-     "src/**/*",
-     "data/**/*",
-     "bower.json"
-    ],
-    "extraDependencies": [
-        "manifest.json",
-        "bower_components/webcomponentsjs/webcomponents-lite.js"
-    ],
-    "lint": {
-        "rules": [
-            "polymer-2-hybrid"
-        ],
-        "ignoreWarnings": [
-            "multiple-doc-comments"
-        ]
-    },
-    "builds": [
-        {
-            "preset": "es5-bundled"
-        }
+    "ignoreWarnings": [
+      "multiple-doc-comments"
     ]
+  },
+  "builds": [
+    {
+      "name": "app",
+      "bundle": true,
+      "js": {
+        "minify": true,
+        "compile": false
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      },
+      "stripComments": "true",
+      "addPushManifest": true,
+      "insertPrefetchLinks": true
+    }
+  ]
 }

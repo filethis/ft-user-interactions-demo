@@ -53,7 +53,6 @@ project-serve-node:  ## Serve application using Node "static-server" tool
 	@static-server --port ${LOCAL_PORT};
 
 .PHONY: project-serve-php
-project-serve-php:  ## Serve application using PHP
 	@echo http:localhost:${LOCAL_PORT}; \
 	@php -S 127.0.0.1:${LOCAL_PORT};
 
@@ -95,6 +94,13 @@ project-test-browsersync:  ## Run BrowserSync for tests
 		--index "${NAME}_test.html";
 
 
+# Browse
+
+.PHONY: project-browse
+project-browse:  ## Open locally-served app in browser
+	@open http:localhost:${LOCAL_PORT};
+
+
 # Artifacts -----------------------------------------------------------------------------------
 
 
@@ -114,8 +120,8 @@ artifact-publish-app: artifact-publish-app-versioned artifact-publish-app-latest
 
 .PHONY: artifact-publish-app-versioned
 artifact-publish-app-versioned:  ## Release versioned application
-	@aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/v${VERSION}/app/; \
-	echo https://connect.filethis.com/${NAME}/v${VERSION}/app/index.html;
+	@aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/${VERSION}/app/; \
+	echo https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: artifact-publish-app-latest
 artifact-publish-app-latest:  ## Release latest application
@@ -139,6 +145,14 @@ artifact-publish-app-github-pages: build-dist
 		--dist ./build/es5-bundled; \
 	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
 
+.PHONY: publish
+publish: artifact-publish-app  ## Shortcut for artifact-publish-app
+	@echo Published;
+
+.PHONY: invalidate
+invalidate: artifact-invalidate-app-latest  ## Shortcut for artifact-invalidate-app-latest
+	@echo Invalidated;
+
 
 # Publications -----------------------------------------------------------------------------------
 
@@ -147,7 +161,7 @@ artifact-publish-app-github-pages: build-dist
 
 .PHONY: publication-browse-app-versioned
 publication-browse-app-versioned:  ## Open the published, versioned application in browser
-	@open https://connect.filethis.com/${NAME}/v${VERSION}/app/index.html;
+	@open https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: publication-browse-app-latest
 publication-browse-app-latest:  ## Open the published, latest application in browser
@@ -162,7 +176,7 @@ publication-browse-app-github-pages:  ## Open URL of application published on Gi
 
 .PHONY: publication-url-app-versioned
 publication-url-app-versioned:  ## Print the published, versioned application url
-	@echo https://connect.filethis.com/${NAME}/v${VERSION}/app/index.html;
+	@echo https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: publication-url-app-latest
 publication-url-app-latest:  ## Print the published, latest application url

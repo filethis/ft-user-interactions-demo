@@ -56,13 +56,16 @@ project-serve-node:  ## Serve application using Node "static-server" tool
 	@echo http:localhost:${LOCAL_PORT}; \
 	@php -S 127.0.0.1:${LOCAL_PORT};
 
-# TODO: BrowserSync takes forever to load the application and often runs out of memory. Fix.
-#.PHONY: project-serve-browsersync
-#project-serve-browsersync:  ## Serve application using BrowserSync
-#	@browser-sync start \
-#		--config "bs-config.js" \
-#		--server \
-#		--port ${LOCAL_PORT};
+.PHONY: project-serve-browsersync
+project-serve-browsersync:  ## Serve application using BrowserSync
+	@browser-sync start \
+		--config "bs-config.js" \
+		--server \
+		--port ${LOCAL_PORT};
+
+.PHONY: serve
+serve: project-serve-browsersync  ## Shortcut for project-serve-browsersync
+	@echo Done;
 
 .PHONY: project-browse-browsersync
 project-browse-browsersync:  ## Run BrowserSync, proxied against an already-running local server

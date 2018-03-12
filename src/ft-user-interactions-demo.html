@@ -42,21 +42,21 @@ and to show what user interaction response data is generated when the user fills
 
         <style>
             :host {
-                display:block;
-                overflow:hidden;
+                display: block;
+                overflow: hidden;
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --ft-user-interactions-demo;
                 background-color: #FAFAFA;
-                padding-left:16px;
-                padding-right:16px;
+                padding-left: 16px;
+                padding-right: 16px;
             }
         </style>
 
         <!-- Header -->
         <div class="layout horizontal center">
 
-            <iron-label style="font-family:Arial; padding-top:17px">
+            <iron-label style="font-family:Arial; padding-top: 17px">
                 A demo of FileThis user interactions
             </iron-label>
 
@@ -96,7 +96,7 @@ and to show what user interaction response data is generated when the user fills
 
         <!-- Content -->
         <div class="flex layout horizontal"
-             style="width:100%; padding-bottom:16px; ">
+             style="width:100%; padding-bottom: 16px; ">
 
             <!-- Request -->
             <div class="flex layout vertical"
@@ -104,7 +104,7 @@ and to show what user interaction response data is generated when the user fills
 
                 <!-- Heading -->
                 <div class="layout horizontal center"
-                     style="padding-left:10px; padding-bottom:10px; ">
+                     style="padding-left:10px; padding-bottom: 10px; ">
                     <iron-label style="font-family:Arial;">
                         Request
                     </iron-label>
@@ -133,7 +133,7 @@ and to show what user interaction response data is generated when the user fills
 
                 <!-- Heading -->
                 <div class="layout horizontal center"
-                     style="width:100%; padding-left:10px; padding-bottom:10px; ">
+                     style="width:100%; padding-left: 10px; padding-bottom: 10px; ">
                     <iron-label style="font-family:Arial;">
                         Dialog generated from request
                     </iron-label>
@@ -145,7 +145,7 @@ and to show what user interaction response data is generated when the user fills
                         request="{{_selectedRequest}}"
                         response="{{_response}}"
                         on-entered-data-changed="_onEnteredDataChanged"
-                        style="background:white; border:1px solid #DDD; ">
+                        style="background:white; border: 1px solid #DDD; ">
                 </ft-user-interaction-form>
             </div>
 
@@ -158,7 +158,7 @@ and to show what user interaction response data is generated when the user fills
 
                 <!-- Heading -->
                 <div class="layout horizontal center"
-                     style="padding-left:10px; padding-bottom:10px; ">
+                     style="padding-left:10px; padding-bottom: 10px; ">
                     <iron-label style="font-family:Arial;">
                         Response
                     </iron-label>
@@ -181,10 +181,10 @@ and to show what user interaction response data is generated when the user fills
                      hidden$="[[_response]]"
                      class="flex"
                      style="color:#DDD;
-                            background-color:white;
-                            font-size:14px;
-                            font-family:Arial;
-                            border:1px solid #DDD;">
+                            background-color: white;
+                            font-size: 14px;
+                            font-family: Arial, Helvetica, sans-serif;
+                            border: 1px solid #DDD;">
                     <div>
                         Fill in dialog to the left
                     </div>

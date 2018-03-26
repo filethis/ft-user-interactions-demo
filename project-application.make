@@ -21,7 +21,9 @@ SHELL := /bin/bash
 include project-common.make
 
 
-# Project -----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Project
+#------------------------------------------------------------------------------
 
 
 # Validate
@@ -104,7 +106,9 @@ project-browse:  ## Open locally-served app in browser
 	@open http:localhost:${LOCAL_PORT};
 
 
-# Artifacts -----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Artifacts
+#------------------------------------------------------------------------------
 
 
 # Test before release
@@ -123,17 +127,17 @@ artifact-publish-app: artifact-publish-app-versioned artifact-publish-app-latest
 
 .PHONY: artifact-publish-app-versioned
 artifact-publish-app-versioned:  ## Release versioned application
-	@aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/${VERSION}/app/; \
+	@aws-vault exec filethis-production -- aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/${VERSION}/app/; \
 	echo https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: artifact-publish-app-latest
 artifact-publish-app-latest:  ## Release latest application
-	@aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/latest/app/; \
+	@aws-vault exec filethis-production -- aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/latest/app/; \
 	echo https://connect.filethis.com/${NAME}/latest/app/index.html;
 
 .PHONY: artifact-invalidate-app-latest
 artifact-invalidate-app-latest:  ## Invalidate CDN distribution of latest application
-	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/app/*"; fi
+	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec filethis-production -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/app/*"; fi
 
 .PHONY: artifact-publish-app-github-pages
 artifact-publish-app-github-pages: build-dist
@@ -157,7 +161,9 @@ invalidate: artifact-invalidate-app-latest  ## Shortcut for artifact-invalidate-
 	@echo Invalidated;
 
 
-# Publications -----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Publications
+#------------------------------------------------------------------------------
 
 
 # Browse published application
@@ -204,7 +210,9 @@ publication-url-docs-github-pages:  ## Print URL of docs published on GitHub Pag
 	@echo https://${GITHUB_USER}.github.io/${NAME}/;
 
 
-# Bower -----------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# Bower
+#------------------------------------------------------------------------------
 
 .PHONY: bower-register
 bower-register:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.

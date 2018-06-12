@@ -127,17 +127,17 @@ artifact-publish-app: artifact-publish-app-versioned artifact-publish-app-latest
 
 .PHONY: artifact-publish-app-versioned
 artifact-publish-app-versioned:  ## Release versioned application
-	@aws-vault exec filethis-production -- aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/${VERSION}/app/; \
-	echo https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/app s3://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/app/; \
+	echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: artifact-publish-app-latest
 artifact-publish-app-latest:  ## Release latest application
-	@aws-vault exec filethis-production -- aws s3 sync ./build/app s3://connect.filethis.com/${NAME}/latest/app/; \
-	echo https://connect.filethis.com/${NAME}/latest/app/index.html;
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/app s3://${PUBLICATION_DOMAIN}/${NAME}/latest/app/; \
+	echo https://${PUBLICATION_DOMAIN}/${NAME}/latest/app/index.html;
 
 .PHONY: artifact-invalidate-app-latest
 artifact-invalidate-app-latest:  ## Invalidate CDN distribution of latest application
-	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec filethis-production -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/app/*"; fi
+	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec ${AWS_VAULT_PROFILE} -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/app/*"; fi
 
 .PHONY: artifact-publish-app-github-pages
 artifact-publish-app-github-pages: build-dist
@@ -170,11 +170,11 @@ invalidate: artifact-invalidate-app-latest  ## Shortcut for artifact-invalidate-
 
 .PHONY: publication-browse-app-versioned
 publication-browse-app-versioned:  ## Open the published, versioned application in browser
-	@open https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
+	@open https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: publication-browse-app-latest
 publication-browse-app-latest:  ## Open the published, latest application in browser
-	@open https://connect.filethis.com/${NAME}/latest/app/index.html;
+	@open https://${PUBLICATION_DOMAIN}/${NAME}/latest/app/index.html;
 
 .PHONY: publication-browse-app-github-pages
 publication-browse-app-github-pages:  ## Open URL of application published on GitHub Pages
@@ -185,11 +185,11 @@ publication-browse-app-github-pages:  ## Open URL of application published on Gi
 
 .PHONY: publication-url-app-versioned
 publication-url-app-versioned:  ## Print the published, versioned application url
-	@echo https://connect.filethis.com/${NAME}/${VERSION}/app/index.html;
+	@echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: publication-url-app-latest
 publication-url-app-latest:  ## Print the published, latest application url
-	@echo https://connect.filethis.com/${NAME}/latest/app/index.html;
+	@echo https://${PUBLICATION_DOMAIN}/${NAME}/latest/app/index.html;
 
 .PHONY: publication-url-app-github-pages
 publication-url-app-github-pages:  ## Print URL of application published on GitHub Pages

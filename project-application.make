@@ -116,7 +116,7 @@ project-browse:  ## Open locally-served app in browser
 .PHONY: artifact-serve-app-locally
 artifact-serve-app-locally:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
 	@echo http:localhost:${LOCAL_PORT}; \
-	cd ./build/app && python -m SimpleHTTPServer ${LOCAL_PORT};
+	cd ./build/default && python -m SimpleHTTPServer ${LOCAL_PORT};
 
 
 # Publish application
@@ -127,12 +127,12 @@ artifact-publish-app: artifact-publish-app-versioned artifact-publish-app-latest
 
 .PHONY: artifact-publish-app-versioned
 artifact-publish-app-versioned:  ## Release versioned application
-	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/app s3://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/app/; \
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/default s3://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/app/; \
 	echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/app/index.html;
 
 .PHONY: artifact-publish-app-latest
 artifact-publish-app-latest:  ## Release latest application
-	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/app s3://${PUBLICATION_DOMAIN}/${NAME}/latest/app/; \
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/default s3://${PUBLICATION_DOMAIN}/${NAME}/latest/app/; \
 	echo https://${PUBLICATION_DOMAIN}/${NAME}/latest/app/index.html;
 
 .PHONY: artifact-invalidate-app-latest

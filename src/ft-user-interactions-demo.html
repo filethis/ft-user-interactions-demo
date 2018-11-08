@@ -16,7 +16,6 @@ limitations under the License.
 
 
 <link rel="import" href="../bower_components/ft-user-interaction-form/ft-user-interaction-form.html">
-<link rel="import" href="../bower_components/neon-animation/web-animations.html">  <!-- Need this for paper-dropdown-menu ! -->
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
@@ -64,7 +63,7 @@ and to show what user interaction response data is generated when the user fills
             <div style="width:30px;"></div>
 
             <!-- Versions -->
-            <paper-dropdown-menu label="Version" style="width:75px;">
+            <paper-dropdown-menu label="Version" style="width:75px;" no-animations="true">
                 <paper-listbox
                         class="dropdown-content"
                         slot="dropdown-content"
@@ -79,7 +78,7 @@ and to show what user interaction response data is generated when the user fills
             <div style="width:30px;"></div>
 
             <!-- Requests -->
-            <paper-dropdown-menu label="Example Request" style="width:250px;">
+            <paper-dropdown-menu label="Example Request" style="width:250px;" no-animations="true">
                 <paper-listbox
                         class="dropdown-content"
                         slot="dropdown-content"

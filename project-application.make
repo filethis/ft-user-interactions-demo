@@ -107,6 +107,39 @@ project-browse:  ## Open locally-served app in browser
 
 
 #------------------------------------------------------------------------------
+# Distribution
+#------------------------------------------------------------------------------
+
+.PHONY: dist-serve-app-locally
+dist-serve-app-locally:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
+
+
+.PHONY: dist-publish
+dist-publish: dist-publish-versioned dist-publish-latest  ## Release both the versioned and latest application
+	@echo Pubished both versioned and latest application
+
+.PHONY: dist-publish-versioned
+dist-publish-versioned:  ## Release versioned application
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./dist s3://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/; \
+	echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/index.html;
+
+.PHONY: dist-publish-latest
+dist-publish-latest:  ## Release latest application
+	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./dist s3://${PUBLICATION_DOMAIN}/${NAME}/latest/; \
+	echo https://${PUBLICATION_DOMAIN}/${NAME}/latest/index.html;
+
+.PHONY: dist-invalidate-latest
+dist-invalidate-latest:  ## Invalidate CDN distribution of latest application
+	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec ${AWS_VAULT_PROFILE} -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/*"; fi
+
+.PHONY: invalidate
+invalidate: dist-invalidate-latest  ## Shortcut for dist-invalidate-latest
+	@echo Invalidated;
+
+
+#------------------------------------------------------------------------------
 # Artifacts
 #------------------------------------------------------------------------------
 
@@ -116,7 +149,7 @@ project-browse:  ## Open locally-served app in browser
 .PHONY: artifact-serve-app-locally
 artifact-serve-app-locally:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
 	@echo http:localhost:${LOCAL_PORT}; \
-	cd ./build/default && python -m SimpleHTTPServer ${LOCAL_PORT};
+	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
 
 
 # Publish application
@@ -155,10 +188,6 @@ artifact-publish-app-github-pages: build-dist
 .PHONY: publish
 publish: artifact-publish-app  ## Shortcut for artifact-publish-app
 	@echo Published;
-
-.PHONY: invalidate
-invalidate: artifact-invalidate-app-latest  ## Shortcut for artifact-invalidate-app-latest
-	@echo Invalidated;
 
 
 #------------------------------------------------------------------------------

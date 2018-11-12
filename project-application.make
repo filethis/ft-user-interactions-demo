@@ -63,7 +63,6 @@ project-serve-browsersync:  ## Serve application using BrowserSync
 	@browser-sync start \
 		--config "bs-config.js" \
 		--server \
-		--port ${LOCAL_PORT};
 
 .PHONY: serve
 serve: project-serve-browsersync  ## Shortcut for project-serve-browsersync
@@ -115,6 +114,64 @@ dist-serve-app-locally:  ## Serve application in local build directory using Pyt
 	@echo http:localhost:${LOCAL_PORT}; \
 	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
 
+
+# Build
+
+# polymer-bundler: https://github.com/Polymer/tools/tree/master/packages/bundler
+# crisper: https://github.com/PolymerLabs/crisper
+# babel: https://babeljs.io/
+# uglifyjs: https://github.com/mishoo/UglifyJS2
+# WebPack: https://webpack.js.org/
+
+.PHONY: dist-build
+dist-build:  ## Build distribution
+	@mkdir ./build/; \
+	mkdir ./dist/; \
+	echo Dependencies...; \
+	echo Vulcanizing...; \
+	polymer-bundler \
+	    --in-file ./src/${NAME}.html \
+	    --rewrite-urls-in-templates \
+	    --inline-scripts \
+	    --inline-css \
+	    --out-file ./build/${NAME}.vulcanized.html; \
+    pushd ./build > /dev/null; \
+	echo Splitting...; \
+	crisper \
+	    --source ${NAME}.vulcanized.html \
+	    --html ${NAME}.split.html \
+	    --js ${NAME}.js; \
+	echo Transpiling...; \
+	babel \
+	    ${NAME}.js \
+	    --out-file ${NAME}.es5.js; \
+	echo Minifying...; \
+	cp \
+	    ${NAME}.es5.js \
+	    ${NAME}.minified.js; \
+    popd > /dev/null; \
+	echo Distribution...; \
+	[ ! -z "src/" ] && mkdir ./dist/src/; \
+    cp ./build/${NAME}.split.html ./dist/src/${NAME}.html; \
+    cp ./build/${NAME}.minified.js ./dist/src/${NAME}.js; \
+    cp index.html ./dist/index.html;
+
+
+#	echo Minifying...; \
+#	uglifyjs \
+#	    ${NAME}.es5.js \
+#	    --compress \
+#	    --output ${NAME}.minified.js; \
+
+#	echo Minifying...; \
+#	cp \
+#	    ${NAME}.es5.js \
+#	    ${NAME}.minified.js; \
+
+
+#.PHONY: dist-build
+#dist-build:  ## Build distribution
+#	polymer build;
 
 .PHONY: dist-publish
 dist-publish: dist-publish-versioned dist-publish-latest  ## Release both the versioned and latest application

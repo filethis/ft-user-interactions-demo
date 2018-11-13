@@ -64,10 +64,6 @@ project-serve-browsersync:  ## Serve application using BrowserSync
 		--config "bs-config.js" \
 		--server \
 
-.PHONY: serve
-serve: project-serve-browsersync  ## Shortcut for project-serve-browsersync
-	@echo Done;
-
 .PHONY: project-browse-browsersync
 project-browse-browsersync:  ## Run BrowserSync, proxied against an already-running local server
 	@if lsof -i tcp:${LOCAL_PORT} > /dev/null; then \
@@ -109,13 +105,6 @@ project-browse:  ## Open locally-served app in browser
 # Distribution
 #------------------------------------------------------------------------------
 
-.PHONY: dist-serve-app-locally
-dist-serve-app-locally:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
-
-
-# Build
 
 # polymer-bundler: https://github.com/Polymer/tools/tree/master/packages/bundler
 # crisper: https://github.com/PolymerLabs/crisper
@@ -169,6 +158,11 @@ dist-build:  ## Build distribution
 #	    ${NAME}.minified.js; \
 
 
+.PHONY: dist-serve
+dist-serve:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
+
 #.PHONY: dist-build
 #dist-build:  ## Build distribution
 #	polymer build;
@@ -190,10 +184,6 @@ dist-publish-latest:  ## Release latest application
 .PHONY: dist-invalidate-latest
 dist-invalidate-latest:  ## Invalidate CDN distribution of latest application
 	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec ${AWS_VAULT_PROFILE} -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/*"; fi
-
-.PHONY: invalidate
-invalidate: dist-invalidate-latest  ## Shortcut for dist-invalidate-latest
-	@echo Invalidated;
 
 
 #------------------------------------------------------------------------------
@@ -241,10 +231,6 @@ artifact-publish-app-github-pages: build-dist
 		--silent \
 		--dist ./build/es5-bundled; \
 	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
-
-.PHONY: publish
-publish: artifact-publish-app  ## Shortcut for artifact-publish-app
-	@echo Published;
 
 
 #------------------------------------------------------------------------------
@@ -294,6 +280,23 @@ publication-browse-docs-github-pages:  ## Open URL of application documentation 
 .PHONY: publication-url-docs-github-pages
 publication-url-docs-github-pages:  ## Print URL of docs published on GitHub Pages
 	@echo https://${GITHUB_USER}.github.io/${NAME}/;
+
+
+#------------------------------------------------------------------------------
+# Shortcuts
+#------------------------------------------------------------------------------
+
+.PHONY: serve
+serve: dist-serve  ## Shortcut for dist-serve
+	@echo Done;
+
+.PHONY: publish
+publish: artifact-publish-app  ## Shortcut for artifact-publish-app
+	@echo Published;
+
+.PHONY: invalidate
+invalidate: dist-invalidate-latest  ## Shortcut for dist-invalidate-latest
+	@echo Invalidated;
 
 
 #------------------------------------------------------------------------------

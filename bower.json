@@ -3,7 +3,7 @@
   "description": "Demo user interactions",
   "main": "index.html",
   "dependencies": {
-    "ft-user-interaction-form": "filethis/ft-user-interaction-form#^1.0.32",
+    "ft-user-interaction-form": "filethis/ft-user-interaction-form#^1.0.33",
     "iron-label": "PolymerElements/iron-label#2.1.0",
     "iron-list": "PolymerElements/iron-list#2.0.19",
     "juicy-ace-editor": "^2.0.4",

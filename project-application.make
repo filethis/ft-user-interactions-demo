@@ -105,15 +105,14 @@ project-browse:  ## Open locally-served app in browser
 # Distribution
 #------------------------------------------------------------------------------
 
-
 # polymer-bundler: https://github.com/Polymer/tools/tree/master/packages/bundler
 # crisper: https://github.com/PolymerLabs/crisper
 # babel: https://babeljs.io/
 # uglifyjs: https://github.com/mishoo/UglifyJS2
 # WebPack: https://webpack.js.org/
 
-.PHONY: dist-build
-dist-build:  ## Build distribution
+.PHONY: dist-build-custom
+dist-build-custom:  ## Build distribution
 	@mkdir ./build/; \
 	mkdir ./dist/; \
 	echo Dependencies...; \
@@ -158,32 +157,25 @@ dist-build:  ## Build distribution
 #	    ${NAME}.minified.js; \
 
 
-.PHONY: dist-serve
-dist-serve:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
+.PHONY: dist-serve-prod
+dist-serve-prod:  ## Serve production application in local build directory using "polymer serve". Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	polymer serve build/prod --port ${LOCAL_PORT} --open;
+
+.PHONY: dist-serve-debug
+dist-serve-debug:  ## Serve debug application in local build directory using "polymer serve". Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	polymer serve build/debug --port ${LOCAL_PORT} --open;
+
+.PHONY: dist-serve-dev
+dist-serve-dev:  ## Serve dev application in local build directory using "polymer serve". Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	polymer serve build/dev --port ${LOCAL_PORT} --open;
+
+.PHONY: dist-serve-custom
+dist-serve-custom:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
 	@echo http:localhost:${LOCAL_PORT}; \
 	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
-
-#.PHONY: dist-build
-#dist-build:  ## Build distribution
-#	polymer build;
-
-.PHONY: dist-publish
-dist-publish: dist-publish-versioned dist-publish-latest  ## Release both the versioned and latest application
-	@echo Pubished both versioned and latest application
-
-.PHONY: dist-publish-versioned
-dist-publish-versioned:  ## Release versioned application
-	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./dist s3://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/; \
-	echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/index.html;
-
-.PHONY: dist-publish-latest
-dist-publish-latest:  ## Release latest application
-	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./dist s3://${PUBLICATION_DOMAIN}/${NAME}/latest/; \
-	echo https://${PUBLICATION_DOMAIN}/${NAME}/latest/index.html;
-
-.PHONY: dist-invalidate-latest
-dist-invalidate-latest:  ## Invalidate CDN distribution of latest application
-	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec ${AWS_VAULT_PROFILE} -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/*"; fi
 
 
 #------------------------------------------------------------------------------
@@ -285,18 +277,6 @@ publication-url-docs-github-pages:  ## Print URL of docs published on GitHub Pag
 #------------------------------------------------------------------------------
 # Shortcuts
 #------------------------------------------------------------------------------
-
-.PHONY: serve
-serve: dist-serve  ## Shortcut for dist-serve
-	@echo Done;
-
-.PHONY: publish
-publish: artifact-publish-app  ## Shortcut for artifact-publish-app
-	@echo Published;
-
-.PHONY: invalidate
-invalidate: dist-invalidate-latest  ## Shortcut for dist-invalidate-latest
-	@echo Invalidated;
 
 
 #------------------------------------------------------------------------------

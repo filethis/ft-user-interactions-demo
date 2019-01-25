@@ -22,50 +22,60 @@ include project-common.make
 
 
 #------------------------------------------------------------------------------
-# Project
+# Source
 #------------------------------------------------------------------------------
-
 
 # Validate
 
-.PHONY: project-validate-polymerlint
-project-validate-polymerlint:  ## Run Polymer linter over project source files
-	@polymer lint --input ./src/${NAME}.html;
+.PHONY: source-validate-polymerlint
+source-validate-polymerlint:  ## Run Polymer linter over project source files
+	@echo polymer lint; \
+	polymer lint --input index.html || true;
 
-.PHONY: project-validate-eslint
-project-validate-eslint:  ## Run ESLint tool over project source files
-	@eslint --ext .html,.js ./src;
+.PHONY: source-validate-eslint
+source-validate-eslint:  ## Run ESLint tool over project source files
+	@echo eslint; \
+    eslint --ext .html,.js ./ || true;
 
+.PHONY: source-validate
+source-validate: source-validate-polymerlint source-validate-eslint ## Shortcut for source-validate-polymerlint and source-validate-eslint
+	@echo source-validate;
 
 # Serve
 
-.PHONY: project-serve-python
-project-serve-python:  ## Serve application using Python 2.7
+.PHONY: source-serve-python
+source-serve-python:  ## Serve application using Python 2.7
 	@echo http:localhost:${LOCAL_PORT}; \
 	python -m SimpleHTTPServer ${LOCAL_PORT};
 
-.PHONY: project-serve-ruby
-project-serve-ruby:  ## Serve application using Ruby
+.PHONY: source-serve-ruby
+source-serve-ruby:  ## Serve application using Ruby
 	@echo http:localhost:${LOCAL_PORT}; \
-	@ruby -run -ehttpd . -p${LOCAL_PORT};
+	ruby -run -ehttpd . -p${LOCAL_PORT};
 
-.PHONY: project-serve-node
-project-serve-node:  ## Serve application using Node "static-server" tool
+.PHONY: source-serve-node
+source-serve-node:  ## Serve application using Node "static-server" tool
 	@echo http:localhost:${LOCAL_PORT}; \
-	@static-server --port ${LOCAL_PORT};
+	static-server --port ${LOCAL_PORT};
 
-.PHONY: project-serve-php
+.PHONY: source-serve-php
 	@echo http:localhost:${LOCAL_PORT}; \
-	@php -S 127.0.0.1:${LOCAL_PORT};
+	php -S 127.0.0.1:${LOCAL_PORT};
 
-.PHONY: project-serve-browsersync
-project-serve-browsersync:  ## Serve application using BrowserSync
+.PHONY: source-serve-browsersync
+source-serve-browsersync:  ## Serve application using BrowserSync
 	@browser-sync start \
 		--config "bs-config.js" \
-		--server \
+		--server
 
-.PHONY: project-browse-browsersync
-project-browse-browsersync:  ## Run BrowserSync, proxied against an already-running local server
+# Browse
+
+.PHONY: source-browse
+source-browse:  ## Open locally-served app in browser
+	@open http:localhost:${LOCAL_PORT};
+
+.PHONY: source-browse-browsersync
+source-browse-browsersync:  ## Run BrowserSync, proxied against an already-running local server
 	@if lsof -i tcp:${LOCAL_PORT} > /dev/null; then \
 		echo Found running Polymer server; \
 	else \
@@ -94,23 +104,44 @@ project-test-browsersync:  ## Run BrowserSync for tests
 		--index "${NAME}_test.html";
 
 
-# Browse
-
-.PHONY: project-browse
-project-browse:  ## Open locally-served app in browser
-	@open http:localhost:${LOCAL_PORT};
-
-
 #------------------------------------------------------------------------------
 # Distribution
 #------------------------------------------------------------------------------
+
+# Serve
+
+.PHONY: dist-serve-dev
+dist-serve-dev:  ## Serve dev application in local build directory using "polymer serve". Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	polymer serve build/dev --port ${LOCAL_PORT} --open;
+
+.PHONY: dist-serve-prod
+dist-serve-prod:  ## Serve production application in local build directory using "polymer serve". Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	polymer serve build/prod --port ${LOCAL_PORT} --open;
+
+.PHONY: dist-serve-debug
+dist-serve-debug:  ## Serve debug application in local build directory using "polymer serve". Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	polymer serve build/debug --hostname localhost --port ${LOCAL_PORT} --open;
+
+.PHONY: dist-serve-custom
+dist-serve-custom:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
+	@echo http:localhost:${LOCAL_PORT}; \
+	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
+
+.PHONY: dist-serve
+dist-serve: dist-serve-dev  ## Shortcut for dist-serve-dev
+	@echo dist-serve;
+
+# Build
 
 # polymer-bundler: https://github.com/Polymer/tools/tree/master/packages/bundler
 # crisper: https://github.com/PolymerLabs/crisper
 # babel: https://babeljs.io/
 # uglifyjs: https://github.com/mishoo/UglifyJS2
 # WebPack: https://webpack.js.org/
-
+# NOTE: If use this again, it will need to be fit into the new dist and build folder structure
 .PHONY: dist-build-custom
 dist-build-custom:  ## Build distribution
 	@mkdir ./build/; \
@@ -144,7 +175,6 @@ dist-build-custom:  ## Build distribution
     cp ./build/${NAME}.minified.js ./dist/src/${NAME}.js; \
     cp index.html ./dist/index.html;
 
-
 #	echo Minifying...; \
 #	uglifyjs \
 #	    ${NAME}.es5.js \
@@ -157,121 +187,49 @@ dist-build-custom:  ## Build distribution
 #	    ${NAME}.minified.js; \
 
 
-.PHONY: dist-serve-prod
-dist-serve-prod:  ## Serve production application in local build directory using "polymer serve". Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	polymer serve build/prod --port ${LOCAL_PORT} --open;
-
-.PHONY: dist-serve-debug
-dist-serve-debug:  ## Serve debug application in local build directory using "polymer serve". Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	polymer serve build/debug --port ${LOCAL_PORT} --open;
-
-.PHONY: dist-serve-dev
-dist-serve-dev:  ## Serve dev application in local build directory using "polymer serve". Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	polymer serve build/dev --port ${LOCAL_PORT} --open;
-
-.PHONY: dist-serve-custom
-dist-serve-custom:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
-
-
-#------------------------------------------------------------------------------
-# Artifacts
-#------------------------------------------------------------------------------
-
-
-# Test before release
-
-.PHONY: artifact-serve-app-locally
-artifact-serve-app-locally:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
-
-
-# Publish application
-
-.PHONY: artifact-publish-app
-artifact-publish-app: artifact-publish-app-versioned artifact-publish-app-latest  ## Release both the versioned and latest application
-	@echo Pubished both versioned and latest application
-
-.PHONY: artifact-publish-app-versioned
-artifact-publish-app-versioned:  ## Release versioned application
-	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/default s3://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/; \
-	echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/index.html;
-
-.PHONY: artifact-publish-app-latest
-artifact-publish-app-latest:  ## Release latest application
-	@aws-vault exec ${AWS_VAULT_PROFILE} -- aws s3 sync ./build/default s3://${PUBLICATION_DOMAIN}/${NAME}/latest/; \
-	echo https://${PUBLICATION_DOMAIN}/${NAME}/latest/index.html;
-
-.PHONY: artifact-invalidate-app-latest
-artifact-invalidate-app-latest:  ## Invalidate CDN distribution of latest application
-	@if [ -z "${CDN_DISTRIBUTION_ID}" ]; then echo "Cannot invalidate distribution. Define CDN_DISTRIBUTION_ID"; else aws-vault exec ${AWS_VAULT_PROFILE} -- aws cloudfront create-invalidation --distribution-id ${CDN_DISTRIBUTION_ID} --paths "/${NAME}/latest/*"; fi
-
-.PHONY: artifact-publish-app-github-pages
-artifact-publish-app-github-pages: build-dist
-	@bin_dir="$$(dirname `which gh-pages`)"; \
-	parent_dir="$$(dirname $$bin_dir)"; \
-	lib_dir=$$parent_dir/lib; \
-	rm -rf $$lib_dir/node_modules/gh-pages/.cache; \
-	gh-pages \
-		--repo https://github.com/${GITHUB_USER}/${NAME}.git \
-		--branch gh-pages \
-		--silent \
-		--dist ./build/es5-bundled; \
-	echo Published version ${VERSION} of application \"${NAME}\" to GitHub Pages at https://${GITHUB_USER}.github.io/${NAME};
-
-
 #------------------------------------------------------------------------------
 # Publications
 #------------------------------------------------------------------------------
 
+# Browse
 
-# Browse published application
+.PHONY: publication-browse-dev
+publication-browse-dev:  ## Open the published dev application
+	@open https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/dev/index.html;
 
-.PHONY: publication-browse-app-versioned
-publication-browse-app-versioned:  ## Open the published, versioned application in browser
+.PHONY: publication-browse-prod
+publication-browse-prod:  ## Open the published prod application
 	@open https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/index.html;
 
-.PHONY: publication-browse-app-latest
-publication-browse-app-latest:  ## Open the published, latest application in browser
-	@open https://${PUBLICATION_DOMAIN}/${NAME}/latest/index.html;
+.PHONY: publication-browse-debug
+publication-browse-debug:  ## Open the published debug application
+	@open https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/debug/index.html;
 
-.PHONY: publication-browse-app-github-pages
-publication-browse-app-github-pages:  ## Open URL of application published on GitHub Pages
-	@open https://${GITHUB_USER}.github.io/${NAME}/;
+# URL
 
+.PHONY: publication-url-dev
+publication-url-dev:  ## Print URL of the published dev application
+	@echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/dev/index.html;
 
-# Print URL of published application
-
-.PHONY: publication-url-app-versioned
-publication-url-app-versioned:  ## Print the published, versioned application url
+.PHONY: publication-url-prod
+publication-url-prod:  ## Print URL of the published prod application
 	@echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/index.html;
 
-.PHONY: publication-url-app-latest
-publication-url-app-latest:  ## Print the published, latest application url
-	@echo https://${PUBLICATION_DOMAIN}/${NAME}/latest/index.html;
-
-.PHONY: publication-url-app-github-pages
-publication-url-app-github-pages:  ## Print URL of application published on GitHub Pages
-	@echo https://${GITHUB_USER}.github.io/${NAME}/;
+.PHONY: publication-url-debug
+publication-url-debug:  ## Print URL of the published debug application
+	@echo https://${PUBLICATION_DOMAIN}/${NAME}/${VERSION}/debug/index.html;
 
 
-# Browse published docs
+#------------------------------------------------------------------------------
+# Other
+#------------------------------------------------------------------------------
 
-.PHONY: publication-browse-docs-github-pages
-publication-browse-docs-github-pages:  ## Open URL of application documentation published on GitHub Pages
-	@open https://${GITHUB_USER}.github.io/${NAME}/;
-
-
-# Print URL of published docs
-
-.PHONY: publication-url-docs-github-pages
-publication-url-docs-github-pages:  ## Print URL of docs published on GitHub Pages
-	@echo https://${GITHUB_USER}.github.io/${NAME}/;
+.PHONY: update-polymerjson
+update-polymerjson:  ## Internal. Used when polymer.json templates have changed.
+	@pushd ../../ > /dev/null; \
+	NAME=${NAME} ./bin/moustache ./project-templates/application/polymer.json ./applications/${NAME}/polymer.json; \
+	popd > /dev/null; \
+	echo Updated polymer.json;
 
 
 #------------------------------------------------------------------------------

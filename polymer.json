@@ -5,7 +5,6 @@
   ],
   "sources": [
     "src/**/*",
-    "data/**/*",
     "robots.txt"
   ],
   "extraDependencies": [
@@ -21,21 +20,27 @@
   },
   "builds": [
     {
-      "name": "app",
+      "name": "dev",
+      "bundle": false,
+      "js": {"minify": false, "compile": false},
+      "css": {"minify": false},
+      "html": {"minify": false},
+      "addServiceWorker": false,
+      "addPushManifest": false
+    },
+    {
+      "name": "prod",
+      "preset": "es5-bundled"
+    },
+    {
+      "name": "debug",
+      "preset": "es5-bundled",
       "bundle": true,
-      "js": {
-        "minify": true,
-        "compile": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "stripComments": "true",
-      "addPushManifest": true,
-      "insertPrefetchLinks": true
+      "js": { "minify": false},
+      "css": {"minify": false},
+      "html": { "minify": false},
+      "addServiceWorker": false
     }
   ]
+
 }

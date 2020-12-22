@@ -1,7 +1,7 @@
 # Project configuration
 NAME=ft-user-interactions-demo
 SRC_DIR=src/
-VERSION=1.0.30
+VERSION=3.0.0
 LOCAL_PORT=3002
 GITHUB_USER=filethis
 GITHUB_USER_ABBREV=ft

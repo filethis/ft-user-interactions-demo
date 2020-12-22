@@ -25,7 +25,7 @@ and to show what user interaction response data is generated when the user fills
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import 'ft-user-interaction-form/ft-user-interaction-form.js';
+import '@filethis/ft-user-interaction-form/ft-user-interaction-form.js';
 
 import '@polymer/iron-flex-layout/iron-flex-layout-classes.js';
 import '@polymer/paper-button/paper-button.js';
@@ -34,7 +34,7 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/polymer/polymer-legacy.js';
-import 'juicy-ace-editor/juicy-ace-editor.js';
+import '@filethis/juicy-ace-editor/juicy-ace-editor-module.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({

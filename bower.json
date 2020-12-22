@@ -6,7 +6,7 @@
     "ft-user-interaction-form": "filethis/ft-user-interaction-form#^1.0.33",
     "iron-label": "PolymerElements/iron-label#2.1.0",
     "iron-list": "PolymerElements/iron-list#2.0.19",
-    "juicy-ace-editor": "^2.0.4",
+    "@filethis/juicy-ace-editor": "^2.0.5-es6",
     "log4javascript": "^1.4.9",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#2.1.0",
     "paper-item": "PolymerElements/paper-item#2.1.1",

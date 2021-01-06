@@ -110,31 +110,35 @@ project-test-browsersync:  ## Run BrowserSync for tests
 
 # Serve
 
-.PHONY: dist-serve-dev
-dist-serve-dev:  ## Serve dev application in local build directory using "polymer serve". Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	polymer serve build/dev --port ${LOCAL_PORT} --open;
-
-.PHONY: dist-serve-prod
-dist-serve-prod:  ## Serve production application in local build directory using "polymer serve". Useful to check before releasing.
+dist-serve: 
 	@echo http:localhost:${LOCAL_PORT}; \
 	polymer serve build/prod --port ${LOCAL_PORT} --open;
 
-.PHONY: dist-serve-debug
-dist-serve-debug:  ## Serve debug application in local build directory using "polymer serve". Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	polymer serve build/debug --hostname localhost --port ${LOCAL_PORT} --open;
+# .PHONY: dist-serve-dev
+# dist-serve-dev:  ## Serve dev application in local build directory using "polymer serve". Useful to check before releasing.
+# 	@echo http:localhost:${LOCAL_PORT}; \
+# 	polymer serve build/dev --port ${LOCAL_PORT} --open;
 
-.PHONY: dist-serve-custom
-dist-serve-custom:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
-	@echo http:localhost:${LOCAL_PORT}; \
-	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
+# .PHONY: dist-serve-prod
+# dist-serve-prod:  ## Serve production application in local build directory using "polymer serve". Useful to check before releasing.
+# 	@echo http:localhost:${LOCAL_PORT}; \
+# 	polymer serve build/prod --port ${LOCAL_PORT} --open;
 
-.PHONY: dist-serve
-dist-serve: dist-serve-dev  ## Shortcut for dist-serve-dev
-	@echo dist-serve;
+# .PHONY: dist-serve-debug
+# dist-serve-debug:  ## Serve debug application in local build directory using "polymer serve". Useful to check before releasing.
+# 	@echo http:localhost:${LOCAL_PORT}; \
+# 	polymer serve build/debug --hostname localhost --port ${LOCAL_PORT} --open;
+
+# .PHONY: dist-serve-custom
+# dist-serve-custom:  ## Serve application in local build directory using Python 2.7. Useful to check before releasing.
+# 	@echo http:localhost:${LOCAL_PORT}; \
+# 	cd ./dist && python -m SimpleHTTPServer ${LOCAL_PORT};
+
 
 # Build
+
+dist-build:  ## Build distribution
+	polymer build
 
 # polymer-bundler: https://github.com/Polymer/tools/tree/master/packages/bundler
 # crisper: https://github.com/PolymerLabs/crisper
@@ -142,38 +146,38 @@ dist-serve: dist-serve-dev  ## Shortcut for dist-serve-dev
 # uglifyjs: https://github.com/mishoo/UglifyJS2
 # WebPack: https://webpack.js.org/
 # NOTE: If use this again, it will need to be fit into the new dist and build folder structure
-.PHONY: dist-build-custom
-dist-build-custom:  ## Build distribution
-	@mkdir ./build/; \
-	mkdir ./dist/; \
-	echo Dependencies...; \
-	echo Vulcanizing...; \
-	polymer-bundler \
-	    --in-file ./src/${NAME}.html \
-	    --rewrite-urls-in-templates \
-	    --inline-scripts \
-	    --inline-css \
-	    --out-file ./build/${NAME}.vulcanized.html; \
-    pushd ./build > /dev/null; \
-	echo Splitting...; \
-	crisper \
-	    --source ${NAME}.vulcanized.html \
-	    --html ${NAME}.split.html \
-	    --js ${NAME}.js; \
-	echo Transpiling...; \
-	babel \
-	    ${NAME}.js \
-	    --out-file ${NAME}.es5.js; \
-	echo Minifying...; \
-	cp \
-	    ${NAME}.es5.js \
-	    ${NAME}.minified.js; \
-    popd > /dev/null; \
-	echo Distribution...; \
-	[ ! -z "src/" ] && mkdir ./dist/src/; \
-    cp ./build/${NAME}.split.html ./dist/src/${NAME}.html; \
-    cp ./build/${NAME}.minified.js ./dist/src/${NAME}.js; \
-    cp index.html ./dist/index.html;
+# .PHONY: dist-build-custom
+# dist-build-custom:  ## Build distribution using a custom tool chain
+# 	@mkdir ./build/; \
+# 	mkdir ./dist/; \
+# 	echo Dependencies...; \
+# 	echo Vulcanizing...; \
+# 	polymer-bundler \
+# 	    --in-file ./src/${NAME}.html \
+# 	    --rewrite-urls-in-templates \
+# 	    --inline-scripts \
+# 	    --inline-css \
+# 	    --out-file ./build/${NAME}.vulcanized.html; \
+#     pushd ./build > /dev/null; \
+# 	echo Splitting...; \
+# 	crisper \
+# 	    --source ${NAME}.vulcanized.html \
+# 	    --html ${NAME}.split.html \
+# 	    --js ${NAME}.js; \
+# 	echo Transpiling...; \
+# 	babel \
+# 	    ${NAME}.js \
+# 	    --out-file ${NAME}.es5.js; \
+# 	echo Minifying...; \
+# 	cp \
+# 	    ${NAME}.es5.js \
+# 	    ${NAME}.minified.js; \
+#     popd > /dev/null; \
+# 	echo Distribution...; \
+# 	[ ! -z "src/" ] && mkdir ./dist/src/; \
+#     cp ./build/${NAME}.split.html ./dist/src/${NAME}.html; \
+#     cp ./build/${NAME}.minified.js ./dist/src/${NAME}.js; \
+#     cp index.html ./dist/index.html;
 
 #	echo Minifying...; \
 #	uglifyjs \
@@ -230,29 +234,5 @@ update-polymerjson:  ## Internal. Used when polymer.json templates have changed.
 	NAME=${NAME} ./bin/moustache ./project-templates/application/polymer.json ./applications/${NAME}/polymer.json; \
 	popd > /dev/null; \
 	echo Updated polymer.json;
-
-
-#------------------------------------------------------------------------------
-# Shortcuts
-#------------------------------------------------------------------------------
-
-
-#------------------------------------------------------------------------------
-# Bower
-#------------------------------------------------------------------------------
-
-.PHONY: bower-register
-bower-register:  # Internal target: Register element in public Bower registry. Usually invoked as part of a release via 'release' target.
-	@echo TODO: Should Polymer applications be registered in Bower?;
-
-
-#------------------------------------------------------------------------------
-# modulize
-#------------------------------------------------------------------------------
-
-.PHONY: modulize
-modulize:  # Upgrade code to Polymer version 3.
-	@bower cache clean && bower install; \
-	modulizer --npm-name ${NAME} --npm-version ${VERSION} --import-style name --out .;
 
 

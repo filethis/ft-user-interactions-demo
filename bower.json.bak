@@ -12,6 +12,7 @@
     "polymer": "Polymer/polymer#^2.7.0"
   },
   "devDependencies": {
+    "@babel/helpers": "^7.12.5",
     "iron-component-page": "PolymerElements/iron-component-page#2.0.0",
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.1.2",
     "iron-test-helpers": "PolymerElements/iron-test-helpers#2.0.1",
